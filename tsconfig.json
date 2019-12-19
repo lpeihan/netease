@@ -11,6 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "strictNullChecks": false, // 允许将 undefined null 赋值给其他类型
     "types": [
       "webpack-env",
       "jest"
