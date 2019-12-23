@@ -34,6 +34,8 @@
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
     "prettier": "^1.19.1",
+    "svg-sprite-loader": "^4.1.6",
+    "svgo-loader": "^2.2.1",
     "ts-import-plugin": "^1.6.2",
     "typescript": "~3.5.3",
     "vue-template-compiler": "^2.6.10"

@@ -1,5 +1,10 @@
 const merge = require("webpack-merge");
 const TsImportPlugin = require("ts-import-plugin");
+const path = require("path");
+
+function resolve(dir) {
+  return path.join(__dirname, dir);
+}
 
 module.exports = {
   chainWebpack: config => {
@@ -24,5 +29,17 @@ module.exports = {
         });
         return options;
       });
+
+    config.module.rules.delete("svg");
+    config.module
+      .rule("svg")
+      .test(/\.svg$/)
+      .include.add(resolve("src/assets/icons"))
+      .end()
+      .use("svg-sprite-loader")
+      .loader("svg-sprite-loader")
+      .end()
+      .use("svgo-loader")
+      .loader("svgo-loader");
   }
 };
