@@ -7,6 +7,11 @@ function resolve(dir) {
 }
 
 module.exports = {
+  devServer: {
+    port: 4300,
+    open: true
+  },
+
   chainWebpack: config => {
     config.plugin("define").tap(args => {
       args[0] = {
@@ -52,5 +57,16 @@ module.exports = {
       .end()
       .use("svgo-loader")
       .loader("svgo-loader");
+  },
+
+  pluginOptions: {
+    // https://www.npmjs.com/package/vue-cli-plugin-style-resources-loader
+    "style-resources-loader": {
+      preProcessor: "less",
+      patterns: [
+        resolve("src/styles/var.less"),
+        resolve("src/styles/mixins.less")
+      ]
+    }
   }
 };
