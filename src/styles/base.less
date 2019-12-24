@@ -1,0 +1,34 @@
+//
+// Base
+// --------------------------------------------------
+
+html {
+	font-size: 10vw;
+	height: 100%;
+}
+
+@media screen and (max-width: 320px) {
+	html {
+		font-size: 32PX;
+	}
+}
+
+@media screen and (min-width: 600px) {
+	html  {
+		font-size: 60PX;
+	}
+}
+
+body {
+	position: relative;
+	max-width: 600PX;
+	min-width: 320PX;
+	margin: 0 auto;
+	height: 100%;
+	font-size: @font-size;
+	color: @text-color;
+	font-family: '-apple-system','SF UI Text','Arial','PingFang SC','Hiragino Sans GB','Microsoft YaHei','WenQuanYi Micro Hei','sans-serif';
+	background: @background-color-light;
+}
+
+
