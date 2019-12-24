@@ -8,6 +8,17 @@ function resolve(dir) {
 
 module.exports = {
   chainWebpack: config => {
+    config.plugin("define").tap(args => {
+      args[0] = {
+        "process.env":
+          process.env.ENV === "pro"
+            ? require("./config/prod.env")
+            : require("./config/dev.env")
+      };
+
+      return args;
+    });
+
     config.module
       .rule("ts")
       .use("ts-loader")

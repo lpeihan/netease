@@ -1,9 +1,10 @@
 import axios from "axios";
 
-const CODE_OK = 1;
+const CODE_OK = 200;
 
 const request = axios.create({
-  timeout: 10000
+  timeout: 10000,
+  baseURL: process.env.apiUrl
 });
 
 request.interceptors.request.use(config => {
@@ -15,9 +16,9 @@ request.interceptors.response.use(
     const { config, data } = res;
 
     if (data.code == CODE_OK) {
-      return data;
+      return res;
     } else {
-      return Promise.reject(data);
+      return Promise.reject(res);
     }
   },
   err => {
