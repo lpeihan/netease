@@ -1,10 +1,6 @@
 <template>
   <div class="home">
-    <img
-      v-for="banner in banners"
-      :src="banner.imageUrl"
-      :key="banner.imageUrl"
-    />
+    home
   </div>
 </template>
 
