@@ -21,7 +21,9 @@
         <van-tab title="推荐">
           <recommends />
         </van-tab>
-        <van-tab title="排行">排行</van-tab>
+        <van-tab title="排行">
+          <rank />
+        </van-tab>
         <van-tab title="歌手">歌手</van-tab>
       </van-tabs>
     </div>
@@ -30,11 +32,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import Recommends from "./Recommends.vue";
+import Recommends from "../recommends/Recommends.vue";
+import Rank from "../rank/Rank.vue";
 
 @Component({
   components: {
-    Recommends
+    Recommends,
+    Rank
   }
 })
 export default class extends Vue {
@@ -47,6 +51,9 @@ export default class extends Vue {
   min-height: 100%;
 
   &-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     display: flex;
     align-items: center;
     padding: 0 @padding-l;
@@ -71,6 +78,12 @@ export default class extends Vue {
 
   &-tabs {
     /deep/.van-tabs {
+      .van-tabs__wrap {
+        position: sticky;
+        top: 49px;
+        z-index: 10;
+      }
+
       .van-tabs__nav {
         background: @primary-color;
 

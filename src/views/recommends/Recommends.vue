@@ -8,6 +8,15 @@
       </van-swipe>
     </div>
 
+    <ul class="recommends-entry van-hairline--bottom">
+      <li class="entry-item" v-for="(entry, index) in entries" :key="index">
+        <div class="circle">
+          <icon :name="entry.icon"></icon>
+        </div>
+        <p class="text">{{ entry.text }}</p>
+      </li>
+    </ul>
+
     <div class="recommends-playlist">
       <div class="title">推荐歌单</div>
 
@@ -17,7 +26,7 @@
           v-for="(recommend, index) in recommends"
           :key="index"
         >
-          <img :src="recommend.picUrl" class="pic" />
+          <img class="pic" v-lazy="recommend.picUrl" />
 
           <div class="name">
             {{ recommend.name }}
@@ -34,18 +43,14 @@ import { getBanners, getRecommends } from "../../api/recommends";
 
 @Component
 export default class extends Vue {
-  banners: any[] = [
-    {
-      imageUrl:
-        "http://p1.music.126.net/BWAofrAd5vwt5mEjZla6wg==/109951164575877182.jpg"
-    },
-    {
-      imageUrl:
-        "http://p1.music.126.net/OVf9CfmSlmwCTLrC_ootrA==/109951164575822889.jpg"
-    }
+  banners: any = [];
+  recommends: any = [];
+  entries: any = [
+    { text: "私人fm", icon: "fm" },
+    { text: "每日推荐", icon: "calendar" },
+    { text: "歌单", icon: "disc" },
+    { text: "排行榜", icon: "rank" }
   ];
-
-  recommends: any[] = [];
 
   async getBanners() {
     const res = await getBanners();
@@ -69,7 +74,8 @@ export default class extends Vue {
 <style lang="less" scoped>
 .recommends {
   &-banners {
-    padding: @padding 0;
+    padding: 7px 0;
+    min-height: 145px;
     background: linear-gradient(
       @primary-color,
       @primary-color 70%,
@@ -88,7 +94,35 @@ export default class extends Vue {
     }
 
     .banner-item {
+      display: block;
       border-radius: @border-radius-m;
+    }
+  }
+
+  &-entry {
+    display: flex;
+    padding: 8px 0 12px;
+
+    .entry-item {
+      flex: 1;
+      text-align: center;
+
+      .circle {
+        .size(42px, 42px);
+        background: linear-gradient(90deg, #fb5a52, @primary-color);
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: @white;
+
+        .icon {
+          .size(22px, 22px);
+        }
+      }
+      .text {
+        margin-top: 8px;
+      }
     }
   }
 
@@ -109,11 +143,17 @@ export default class extends Vue {
 
         .pic {
           border-radius: @border-radius-m;
+          overflow: hidden;
+
+          &:active {
+            opacity: 0.85;
+          }
         }
 
         .name {
           font-size: 13px;
           .multi-ellipsis(2);
+          min-height: 36px;
         }
 
         &:nth-child(3n) {
