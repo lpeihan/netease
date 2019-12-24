@@ -59,6 +59,16 @@ module.exports = {
       .loader("svgo-loader");
   },
 
+  css: {
+    loaderOptions: {
+      less: {
+        modifyVars: {
+          "primary-color": "#fc2834"
+        }
+      }
+    }
+  },
+
   pluginOptions: {
     // https://www.npmjs.com/package/vue-cli-plugin-style-resources-loader
     "style-resources-loader": {

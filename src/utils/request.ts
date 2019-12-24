@@ -13,9 +13,7 @@ request.interceptors.request.use(config => {
 
 request.interceptors.response.use(
   res => {
-    const { config, data } = res;
-
-    if (data.code == CODE_OK) {
+    if (res.data.code == CODE_OK) {
       return res;
     } else {
       return Promise.reject(res);
