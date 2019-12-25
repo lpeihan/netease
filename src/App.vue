@@ -1,8 +1,44 @@
 <template>
   <div class="app">
-    <router-view class="app-view" />
+    <transition :name="transitionName" :css="Boolean(transitionName)">
+      <keep-alive :include="keepAlive">
+        <router-view class="app-view" :key="$route.fullPath" />
+      </keep-alive>
+    </transition>
+
+    <loading v-model="loading" />
   </div>
 </template>
+
+<script lang="ts">
+import { Vue, Component, Watch } from "vue-property-decorator";
+import Loading from "./components/Loading.vue";
+import { Getter } from "vuex-class";
+
+@Component({
+  name: "app",
+  components: {
+    Loading
+  }
+})
+export default class extends Vue {
+  keepAlive: string[] = ["home"];
+  transitionName: string = "slide-left";
+
+  @Getter("loading") loading: boolean;
+
+  @Watch("$route")
+  function(to: any, from: any) {
+    if (to.meta.index > from.meta.index) {
+      this.transitionName = "slide-left";
+    } else if (to.meta.index < from.meta.index) {
+      this.transitionName = "slide-right";
+    } else {
+      this.transitionName = "van-fade";
+    }
+  }
+}
+</script>
 
 <style lang="less">
 .app {

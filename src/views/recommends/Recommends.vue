@@ -1,5 +1,5 @@
 <template>
-  <div class="recommends">
+  <div class="recommends" v-if="banners.length && recommends.length">
     <div class="recommends-banners">
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="banner in banners" :key="banner.imageUrl">

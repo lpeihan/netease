@@ -8,14 +8,20 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: Home
+    component: Home,
+    meta: {
+      index: 1
+    }
+  },
+  {
+    path: "/search",
+    name: "search",
+    component: () =>
+      import(/* webpackChunkName: "search" */ "../views/search/Search.vue"),
+    meta: {
+      index: 2
+    }
   }
-  // {
-  //   path: "/about",
-  //   name: "about",
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ "../views/About.vue")
-  // }
 ];
 
 const router = new VueRouter({

@@ -7,7 +7,7 @@
         <icon name="logo"></icon>
       </div>
 
-      <icon name="search"></icon>
+      <icon name="search" @click="$router.push('/search')"></icon>
     </div>
 
     <div class="home-tabs">
@@ -39,6 +39,7 @@ import Rank from "../rank/Rank.vue";
 import Singers from "../singers/Singers.vue";
 
 @Component({
+  name: "home",
   components: {
     Recommends,
     Rank,
