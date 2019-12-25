@@ -41,7 +41,7 @@ export default class extends Vue {
   .active();
 
   .img {
-    .size(80px, 80px);
+    .size(88px, 88px);
     border-radius: @border-radius-m;
   }
 

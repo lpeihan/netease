@@ -5,6 +5,9 @@ import store from "./store";
 import Icon from "./components/Icon.vue";
 import "./vant";
 import "./styles/index.less";
+import VConsole from "vconsole";
+
+new VConsole();
 
 Vue.config.productionTip = false;
 
