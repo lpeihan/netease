@@ -1,11 +1,6 @@
 <template>
   <div class="ranking">
-    <rank-item
-      v-for="(rank, index) in ranks"
-      :item="rank"
-      :key="rank.id"
-      :index="index"
-    />
+    <rank-item v-for="rank in ranks" :item="rank" :key="rank.id" />
   </div>
 </template>
 

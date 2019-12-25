@@ -24,7 +24,9 @@
         <van-tab title="排行">
           <rank />
         </van-tab>
-        <van-tab title="歌手">歌手</van-tab>
+        <van-tab title="歌手">
+          <singers />
+        </van-tab>
       </van-tabs>
     </div>
   </div>
@@ -34,11 +36,13 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import Recommends from "../recommends/Recommends.vue";
 import Rank from "../rank/Rank.vue";
+import Singers from "../singers/Singers.vue";
 
 @Component({
   components: {
     Recommends,
-    Rank
+    Rank,
+    Singers
   }
 })
 export default class extends Vue {
