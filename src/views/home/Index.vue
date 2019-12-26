@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="home-header">
-      <icon name="menu"></icon>
+      <icon name="menu" @click="openUserDrawer"></icon>
 
       <div class="header-middle">
         <icon name="logo"></icon>
@@ -29,6 +29,8 @@
         </van-tab>
       </van-tabs>
     </div>
+
+    <user-drawer ref="userDrawer" />
   </div>
 </template>
 
@@ -37,17 +39,23 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import Recommends from "../recommends/Recommends.vue";
 import Rank from "../rank/Rank.vue";
 import Singers from "../singers/Singers.vue";
+import UserDrawer from "../user/UserDrawer.vue";
 
 @Component({
   name: "home",
   components: {
     Recommends,
     Rank,
-    Singers
+    Singers,
+    UserDrawer
   }
 })
 export default class extends Vue {
   active: number = 0;
+
+  openUserDrawer() {
+    (this.$refs.userDrawer as any).open();
+  }
 }
 </script>
 

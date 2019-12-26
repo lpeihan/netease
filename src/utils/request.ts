@@ -1,5 +1,6 @@
 import axios from "axios";
 import store from "../store";
+import Vue from "vue";
 
 const CODE_OK = 200;
 let loadCount = 0; // 当前请求 loading 的数量
@@ -32,6 +33,12 @@ request.interceptors.response.use(
   },
   err => {
     loadCount--;
+
+    if (loadCount <= 0) {
+      store.dispatch("setLoading", false);
+    }
+
+    Vue.prototype.$toast(err.message);
     return Promise.reject(err);
   }
 );

@@ -7,7 +7,8 @@ import {
   Swipe,
   SwipeItem,
   Image,
-  Lazyload
+  Lazyload,
+  Popup
 } from "vant";
 
 Vue.use(Button);
@@ -20,3 +21,4 @@ Vue.use(Image);
 Vue.use(Lazyload, {
   loading: require("./assets/images/default.png")
 });
+Vue.use(Popup);
