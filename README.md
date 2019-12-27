@@ -1,4 +1,4 @@
-# vue-ts
+# netease
 
 ## Project setup
 ```
