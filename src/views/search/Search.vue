@@ -5,7 +5,12 @@
       <icon name="delete" v-if="word" @click="clear" />
 
       <form @submit.prevent="search(word)">
-        <input placeholder="搜索歌曲、歌手" id="input" v-model="word" />
+        <input
+          placeholder="搜索歌曲、歌手"
+          id="input"
+          v-model="word"
+          autocomplete="off"
+        />
       </form>
     </div>
 
