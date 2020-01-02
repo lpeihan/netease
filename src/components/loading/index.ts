@@ -5,7 +5,7 @@ const LoadingConstructor = Vue.extend(require("./Loading").default);
 let instance: any;
 
 export default {
-  open() {
+  open(options: { message?: string } = {}) {
     if (!instance) {
       instance = new LoadingConstructor({
         el: document.createElement("div")
@@ -16,6 +16,10 @@ export default {
 
     if (instance.show) {
       return;
+    }
+
+    if (options.message) {
+      instance.message = options.message;
     }
 
     Vue.nextTick(() => {
