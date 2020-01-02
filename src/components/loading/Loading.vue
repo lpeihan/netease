@@ -1,10 +1,12 @@
 <template>
-  <div class="loading" v-if="show">
-    <div class="loading-content">
-      <img src="../../assets/images/loading.gif" />
-      <div class="message">{{ message }}</div>
+  <transition name="van-fade" :duration="50">
+    <div class="loading" v-if="show">
+      <div class="loading-content">
+        <img src="../../assets/images/loading.gif" />
+        <div class="message">{{ message }}</div>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script lang="ts">

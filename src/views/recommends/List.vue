@@ -23,7 +23,7 @@
       <div class="right-info">
         <div class="title">{{ playlist.name }}</div>
 
-        <div class="desc">
+        <div class="desc" v-if="avatar">
           <img :src="avatar" class="avatar" />
           <span class="nickname">{{ nickname }}</span>
         </div>
@@ -84,7 +84,9 @@ export default class extends Vue {
   }
 
   created() {
-    this.getPlaylist();
+    setTimeout(() => {
+      this.getPlaylist();
+    }, 300);
   }
 }
 </script>
