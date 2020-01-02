@@ -8,8 +8,8 @@ function resolve(dir) {
 
 module.exports = {
   devServer: {
-    port: 4300,
-    open: true
+    port: 4300
+    // open: true
   },
 
   chainWebpack: config => {
