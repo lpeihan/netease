@@ -25,6 +25,7 @@
           class="song-item"
           v-for="(recommend, index) in recommends"
           :key="index"
+          @click="select(recommend)"
         >
           <img class="pic" v-lazy="recommend.picUrl" />
 
@@ -62,6 +63,10 @@ export default class extends Vue {
     const res = await getRecommends();
 
     this.recommends = res.data.result;
+  }
+
+  select(item: any) {
+    this.$router.push("/recommends/" + item.id);
   }
 
   created() {

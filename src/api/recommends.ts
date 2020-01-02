@@ -12,7 +12,7 @@ export function getRecommends() {
   });
 }
 
-export function getPlaylist(id: number) {
+export function getPlaylist(id: string) {
   return request({
     url: "/playlist/detail",
     params: {

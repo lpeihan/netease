@@ -6,7 +6,7 @@ export function getSingers() {
   });
 }
 
-export function getSingersDetail(id: number) {
+export function getSingersDetail(id: string) {
   return request({
     url: "/artists",
     params: {

@@ -1,6 +1,6 @@
 import request from "../utils/request";
 
-export function getSong(id: number) {
+export function getSong(id: string) {
   return request({
     url: "/song/url",
     params: {
@@ -9,7 +9,7 @@ export function getSong(id: number) {
   });
 }
 
-export function getLyric(id: number) {
+export function getLyric(id: string) {
   return request({
     url: "/lyric",
     params: {
@@ -18,7 +18,7 @@ export function getLyric(id: number) {
   });
 }
 
-export function getComments(id: number, offset = 0) {
+export function getComments(id: string, offset = 0) {
   return request({
     url: "/comment/music",
     params: {

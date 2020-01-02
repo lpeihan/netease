@@ -5,12 +5,3 @@ export function getRanks() {
     url: "/toplist/detail"
   });
 }
-
-export function getRanksDetail(id: number) {
-  return request({
-    url: "/playlist/detail",
-    params: {
-      id
-    }
-  });
-}

@@ -21,6 +21,16 @@ const routes = [
     meta: {
       index: 2
     }
+  },
+  {
+    path: "/recommends/:id",
+    component: () =>
+      import(
+        /* webpackChunkName: "recommends" */ "../views/recommends/List.vue"
+      ),
+    meta: {
+      index: 2
+    }
   }
 ];
 
