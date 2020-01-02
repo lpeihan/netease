@@ -3,9 +3,9 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "./vant";
-import "./styles/index.less";
 import VConsole from "vconsole";
 import Icon from "./components/Icon.vue";
+import "./styles/index.less";
 
 new VConsole();
 

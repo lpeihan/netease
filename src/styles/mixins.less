@@ -26,3 +26,24 @@
     opacity: 0.1
   }
 }
+
+.bg-filter(@blur: 20px) {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-size: cover;
+  filter: blur(@blur);
+  transform: scaleY(1.5);
+  z-index: -1;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(7, 17, 27, 0.2);
+  }
+}

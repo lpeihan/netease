@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "lodash": "^4.17.15",
     "pinyin": "^2.9.0",
     "vant": "^2.3.3",
     "vconsole": "^3.3.4",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.19",
+    "@types/lodash": "^4.14.149",
     "@types/pinyin": "^2.8.1",
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-plugin-router": "^4.1.0",

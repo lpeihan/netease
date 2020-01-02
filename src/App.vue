@@ -9,7 +9,9 @@
 </template>
 
 <script lang="ts">
+import { throttle } from "lodash";
 import { Vue, Component, Watch } from "vue-property-decorator";
+import { Action } from "vuex-class";
 
 @Component({
   name: "app"
@@ -27,6 +29,20 @@ export default class extends Vue {
     } else {
       this.transitionName = "van-fade";
     }
+  }
+
+  @Action("setScrollTop") setScrollTop: (val: number) => {};
+
+  mounted() {
+    const doc = document;
+
+    // scroll top
+    doc.addEventListener(
+      "scroll",
+      throttle(() => {
+        this.setScrollTop(doc.documentElement.scrollTop || doc.body.scrollTop);
+      }, 50)
+    );
   }
 }
 </script>

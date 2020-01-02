@@ -41,6 +41,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { getBanners, getRecommends } from "../../api/recommends";
+import storage from "../../utils/storage";
 
 @Component
 export default class extends Vue {
@@ -67,6 +68,7 @@ export default class extends Vue {
 
   select(item: any) {
     this.$router.push("/recommends/" + item.id);
+    storage.setItem("CURRENT_PLAYLIST", item);
   }
 
   created() {
