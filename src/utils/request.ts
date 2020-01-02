@@ -1,6 +1,6 @@
 import axios from "axios";
-import store from "../store";
 import Vue from "vue";
+import loading from "../components/loading";
 
 const CODE_OK = 200;
 let loadCount = 0; // 当前请求 loading 的数量
@@ -12,7 +12,7 @@ const request = axios.create({
 
 request.interceptors.request.use(config => {
   loadCount++;
-  store.dispatch("setLoading", true);
+  loading.open();
 
   return config;
 });
@@ -22,7 +22,7 @@ request.interceptors.response.use(
     loadCount--;
 
     if (loadCount <= 0) {
-      store.dispatch("setLoading", false);
+      loading.close();
     }
 
     if (res.data.code == CODE_OK) {
@@ -35,7 +35,7 @@ request.interceptors.response.use(
     loadCount--;
 
     if (loadCount <= 0) {
-      store.dispatch("setLoading", false);
+      loading.close();
     }
 
     Vue.prototype.$toast(err.message);

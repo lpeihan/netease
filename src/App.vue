@@ -5,27 +5,18 @@
         <router-view class="app-view" :key="$route.fullPath" />
       </keep-alive>
     </transition>
-
-    <loading v-model="loading" />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Watch } from "vue-property-decorator";
-import Loading from "./components/Loading.vue";
-import { Getter } from "vuex-class";
 
 @Component({
-  name: "app",
-  components: {
-    Loading
-  }
+  name: "app"
 })
 export default class extends Vue {
   keepAlive: string[] = ["home"];
   transitionName: string = "slide-left";
-
-  @Getter("loading") loading: boolean;
 
   @Watch("$route")
   function(to: any, from: any) {

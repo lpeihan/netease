@@ -1,7 +1,7 @@
 <template>
-  <div class="loading" v-if="value">
+  <div class="loading" v-if="show">
     <div class="loading-content">
-      <img src="../assets/images/loading.gif" />
+      <img src="../../assets/images/loading.gif" />
       <div class="message">{{ message }}</div>
     </div>
   </div>
@@ -18,11 +18,7 @@ export default class Icon extends Vue {
   })
   message: string;
 
-  @Prop({
-    type: Boolean,
-    default: false
-  })
-  value: boolean;
+  show: boolean = false;
 }
 </script>
 
