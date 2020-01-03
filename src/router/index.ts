@@ -26,7 +26,17 @@ const routes = [
     path: "/playlist/:id",
     component: () =>
       import(
-        /* webpackChunkName: "playlist" */ "../views/playlist/Playlist.vue"
+        /* webpackChunkName: "playlist" */ "../views/playlist/PlaylistPage.vue"
+      ),
+    meta: {
+      index: 2
+    }
+  },
+  {
+    path: "/singers/:id",
+    component: () =>
+      import(
+        /* webpackChunkName: "playlist" */ "../views/singers/SingersPage.vue"
       ),
     meta: {
       index: 2

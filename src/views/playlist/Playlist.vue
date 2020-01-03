@@ -3,21 +3,15 @@
     <icon name="back" @click="$router.go(-1)"></icon>
 
     <div class="navbar" :style="{ opacity: this.percent }">
-      <div
-        class="filter"
-        :style="{ backgroundImage: `url(${playlist.picUrl})` }"
-      ></div>
-      {{ playlist.name }}
+      <div class="filter" :style="{ backgroundImage: `url(${image})` }"></div>
+      {{ title }}
     </div>
 
     <div class="playlist-header">
-      <div
-        class="filter"
-        :style="{ backgroundImage: `url(${playlist.picUrl})` }"
-      ></div>
-      <img class="left-pic" :src="playlist.picUrl" />
+      <div class="filter" :style="{ backgroundImage: `url(${image})` }"></div>
+      <img class="left-pic" :src="image" />
       <div class="right-info">
-        <div class="title">{{ playlist.name }}</div>
+        <div class="title">{{ title }}</div>
 
         <div class="desc" v-if="avatar">
           <img :src="avatar" class="avatar" />
@@ -48,41 +42,23 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from "vue-property-decorator";
-import { getPlaylist } from "../../api/recommends";
-import { createSong } from "../../services/song";
-import storage from "../../utils/storage";
+import { Vue, Component, Watch, Prop } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 
 @Component
 export default class extends Vue {
-  songs: any[] = [];
-  avatar: string = "";
-  nickname: string = "";
   percent: number = 0;
-  playlist: any = storage.getItem("CURRENT_PLAYLIST") || {};
+
+  @Prop({ default: "" }) image: string;
+  @Prop({ default: "" }) title: string;
+  @Prop({ default: "" }) avatar: string;
+  @Prop({ default: "" }) nickname: string;
+  @Prop({ default: (): any[] => [] }) songs: any[];
 
   @Getter("scrollTop") scrollTop: number;
 
   @Watch("scrollTop") function(val: number) {
     this.percent = Math.abs(val / (innerWidth * 0.6));
-  }
-
-  async getPlaylist() {
-    const res = await getPlaylist(this.$route.params.id);
-    const playlist = res.data.playlist;
-
-    this.avatar = playlist.creator.avatarUrl;
-    this.nickname = playlist.creator.nickname;
-    this.songs = playlist.tracks.map((song: any) => {
-      return createSong(song);
-    });
-  }
-
-  created() {
-    setTimeout(() => {
-      this.getPlaylist();
-    }, 300);
   }
 }
 </script>

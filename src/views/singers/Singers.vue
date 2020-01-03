@@ -3,7 +3,12 @@
     <div class="singers-groups" v-for="group in singers" :key="group.title">
       <div class="title">{{ group.title }}</div>
 
-      <div class="singer-item" v-for="item in group.items" :key="item.id">
+      <div
+        class="singer-item"
+        v-for="item in group.items"
+        :key="item.id"
+        @click="select(item)"
+      >
         <img class="avatar" v-lazy="item.avatar" />
         <div class="name">{{ item.name }}</div>
       </div>
@@ -15,6 +20,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import { getSingers } from "../../api/singers";
 import pinyin from "pinyin";
+import storage from "../../utils/storage";
 
 @Component
 export default class extends Vue {
@@ -63,6 +69,11 @@ export default class extends Vue {
     });
 
     return [hot].concat(ret);
+  }
+
+  select(item: any) {
+    this.$router.push("/singers/" + item.id);
+    storage.setItem("CURRENT_PLAYLIST", item);
   }
 
   created() {
