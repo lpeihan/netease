@@ -1,5 +1,5 @@
 <template>
-  <div class="rank-item van-hairline--bottom">
+  <div class="rank-item van-hairline--bottom" @click="select(item)">
     <img v-lazy="item.coverImgUrl" class="img" />
 
     <div class="rank-item-right">
@@ -26,10 +26,17 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import storage from "../../utils/storage";
 
 @Component
 export default class extends Vue {
   @Prop() private item: any;
+
+  select(item: any) {
+    this.$router.push("/playlist/" + item.id);
+    item.picUrl = item.coverImgUrl;
+    storage.setItem("CURRENT_PLAYLIST", item);
+  }
 }
 </script>
 

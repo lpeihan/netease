@@ -23,10 +23,10 @@ const routes = [
     }
   },
   {
-    path: "/recommends/:id",
+    path: "/playlist/:id",
     component: () =>
       import(
-        /* webpackChunkName: "recommends" */ "../views/recommends/List.vue"
+        /* webpackChunkName: "playlist" */ "../views/playlist/Playlist.vue"
       ),
     meta: {
       index: 2

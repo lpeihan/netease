@@ -67,7 +67,7 @@ export default class extends Vue {
   }
 
   select(item: any) {
-    this.$router.push("/recommends/" + item.id);
+    this.$router.push("/playlist/" + item.id);
     storage.setItem("CURRENT_PLAYLIST", item);
   }
 

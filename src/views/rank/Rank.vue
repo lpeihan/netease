@@ -8,6 +8,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { getRanks } from "../../api/rank";
 import RankItem from "./RankItem.vue";
+import storage from "../../utils/storage";
 
 @Component({
   components: {
