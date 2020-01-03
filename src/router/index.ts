@@ -29,7 +29,7 @@ const routes = [
         /* webpackChunkName: "playlist" */ "../views/playlist/PlaylistPage.vue"
       ),
     meta: {
-      index: 2
+      index: 3
     }
   },
   {
@@ -38,6 +38,14 @@ const routes = [
       import(
         /* webpackChunkName: "playlist" */ "../views/singers/SingersPage.vue"
       ),
+    meta: {
+      index: 2
+    }
+  },
+  {
+    path: "/rank",
+    component: () =>
+      import(/* webpackChunkName: "rank" */ "../views/rank/RankPage.vue"),
     meta: {
       index: 2
     }

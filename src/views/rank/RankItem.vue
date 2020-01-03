@@ -43,7 +43,7 @@ export default class extends Vue {
 <style lang="less" scoped>
 .rank-item {
   display: flex;
-  padding: @padding;
+  padding: @padding-m;
   position: relative;
   .active();
 

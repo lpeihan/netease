@@ -27,7 +27,12 @@
       </div>
 
       <ul class="list">
-        <li class="item" v-for="(song, index) in songs" :key="index">
+        <li
+          class="item"
+          v-for="(song, index) in songs"
+          :key="index"
+          @click="select(index)"
+        >
           <div class="left-index">{{ index + 1 }}</div>
           <div class="middle-info">
             <div class="name">{{ song.name }}</div>
@@ -43,7 +48,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+import { Getter, Action } from "vuex-class";
 
 @Component
 export default class extends Vue {
@@ -57,8 +62,17 @@ export default class extends Vue {
 
   @Getter("scrollTop") scrollTop: number;
 
+  @Action("selectPlay") selectPlay: (payload: {
+    list: any[];
+    index: number;
+  }) => {};
+
   @Watch("scrollTop") function(val: number) {
     this.percent = Math.abs(val / (innerWidth * 0.6));
+  }
+
+  select(index: number) {
+    this.selectPlay({ list: this.songs, index });
   }
 }
 </script>
@@ -103,13 +117,13 @@ export default class extends Vue {
     }
 
     .left-pic {
-      width: 140px;
-      height: 140px;
+      width: 132px;
+      height: 132px;
       border-radius: @border-radius-m;
     }
 
     .right-info {
-      padding-left: 10px;
+      padding-left: 15px;
       .title {
         font-size: 17px;
         margin-bottom: 20px;
@@ -132,11 +146,14 @@ export default class extends Vue {
     background: @white;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+    overflow: hidden;
+
     .play-all {
       display: flex;
       padding: @padding-l;
       align-items: center;
       font-size: 15px;
+      .active();
 
       span {
         color: @text-color-2;
@@ -152,6 +169,9 @@ export default class extends Vue {
         padding: 10px 0;
         display: flex;
         align-items: center;
+        position: relative;
+        .active();
+
         .left-index {
           width: 50px;
           text-align: center;

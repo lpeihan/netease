@@ -301,6 +301,7 @@ export default class extends Vue {
         position: relative;
         display: flex;
         align-items: center;
+        .active();
 
         .left-info {
           flex: 1;

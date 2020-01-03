@@ -9,7 +9,12 @@
     </div>
 
     <ul class="recommends-entry van-hairline--bottom">
-      <li class="entry-item" v-for="(entry, index) in entries" :key="index">
+      <li
+        class="entry-item"
+        v-for="(entry, index) in entries"
+        :key="index"
+        @click="$router.push(entry.to)"
+      >
         <div class="circle">
           <icon :name="entry.icon"></icon>
         </div>
@@ -48,10 +53,10 @@ export default class extends Vue {
   banners: any = [];
   recommends: any = [];
   entries: any = [
-    { text: "私人fm", icon: "fm" },
-    { text: "每日推荐", icon: "calendar" },
-    { text: "歌单", icon: "disc" },
-    { text: "排行榜", icon: "rank" }
+    { text: "私人fm", icon: "fm", to: "/rank" },
+    { text: "每日推荐", icon: "calendar", to: "/rank" },
+    { text: "歌单", icon: "disc", to: "/rank" },
+    { text: "排行榜", icon: "rank", to: "/rank" }
   ];
 
   async getBanners() {
