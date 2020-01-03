@@ -52,3 +52,6 @@ const store = new Store("localStorage");
 export const session = new Store("sessionStorage");
 
 export default store;
+
+// constants
+export const CURRENT_PLAYLIST = "CURRENT_PLAYLIST";

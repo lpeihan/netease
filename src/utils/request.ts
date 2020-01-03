@@ -7,21 +7,22 @@ let loadCount = 0; // 当前请求 loading 的数量
 
 const request = axios.create({
   timeout: 10000,
-  baseURL: process.env.apiUrl
+  baseURL: process.env.apiUrl,
+  _loading: true
 });
 
 request.interceptors.request.use(config => {
-  loadCount++;
-  loading.open();
+  if (config._loading) {
+    loadCount++;
+    loading.open();
+  }
 
   return config;
 });
 
 request.interceptors.response.use(
   res => {
-    loadCount--;
-
-    if (loadCount <= 0) {
+    if (res.config._loading && --loadCount <= 0) {
       loading.close();
     }
 
@@ -32,9 +33,7 @@ request.interceptors.response.use(
     }
   },
   err => {
-    loadCount--;
-
-    if (loadCount <= 0) {
+    if (err.config._loading && --loadCount <= 0) {
       loading.close();
     }
 

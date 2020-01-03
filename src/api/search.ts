@@ -2,7 +2,8 @@ import request from "../utils/request";
 
 export function getHots() {
   return request({
-    url: "/search/hot"
+    url: "/search/hot",
+    _loading: false
   });
 }
 
@@ -11,7 +12,8 @@ export function getSuggests(keywords: string) {
     url: "/search/suggest",
     params: {
       keywords
-    }
+    },
+    _loading: false
   });
 }
 
@@ -30,6 +32,7 @@ export function searchSongs({
       keywords,
       offset,
       limit
-    }
+    },
+    _loading: false
   });
 }

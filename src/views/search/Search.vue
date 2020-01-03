@@ -94,7 +94,7 @@ export default class extends Vue {
   isSearch: boolean = false;
   historys: string[] = storage.getItem(SEARCH_HISTORYS) || [];
   suggests: any[] = [];
-  isFocus: boolean = true;
+  isFocus: boolean = false;
 
   @Watch("word") watchWord(val: string) {
     if (val === "") {
@@ -322,6 +322,7 @@ export default class extends Vue {
         flex-wrap: wrap;
 
         .hot-item {
+          color: @text-color-1;
           border: 1px solid @border-color;
           border-radius: 30px;
           padding: 4px 10px;
@@ -353,12 +354,17 @@ export default class extends Vue {
           display: flex;
           align-items: center;
           padding: 10px 0;
+          position: relative;
+          .active();
 
           .icon-clock {
             color: @text-color-2;
           }
 
           .name {
+            flex: 1;
+            .ellipsis();
+            color: @text-color-1;
             margin-left: 6px;
             font-size: 15px;
           }

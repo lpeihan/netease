@@ -13,7 +13,7 @@ import { Vue, Component } from "vue-property-decorator";
 import Playlist from "../playlist/Playlist.vue";
 import { getSingersDetail } from "../../api/singers";
 import { createSong } from "../../services/song";
-import storage from "../../utils/storage";
+import storage, { CURRENT_PLAYLIST } from "../../utils/storage";
 
 @Component({
   components: {
@@ -21,7 +21,7 @@ import storage from "../../utils/storage";
   }
 })
 export default class extends Vue {
-  playlist: any = storage.getItem("CURRENT_PLAYLIST") || {};
+  playlist: any = storage.getItem(CURRENT_PLAYLIST) || {};
   songs: any[] = [];
 
   async getSingerDetail() {

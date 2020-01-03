@@ -13,7 +13,7 @@ import { Vue, Component } from "vue-property-decorator";
 import { getPlaylist } from "../../api/recommends";
 import { createSong } from "../../services/song";
 import Playlist from "./Playlist.vue";
-import storage from "../../utils/storage";
+import storage, { CURRENT_PLAYLIST } from "../../utils/storage";
 
 @Component({
   components: {
@@ -24,7 +24,7 @@ export default class extends Vue {
   songs: any[] = [];
   avatar: string = "";
   nickname: string = "";
-  playlist: any = storage.getItem("CURRENT_PLAYLIST") || {};
+  playlist: any = storage.getItem(CURRENT_PLAYLIST) || {};
 
   async getPlaylist() {
     const res = await getPlaylist(this.$route.params.id);

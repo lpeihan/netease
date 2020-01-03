@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import storage from "../../utils/storage";
+import storage, { CURRENT_PLAYLIST } from "../../utils/storage";
 
 @Component
 export default class extends Vue {
@@ -35,7 +35,7 @@ export default class extends Vue {
   select(item: any) {
     this.$router.push("/playlist/" + item.id);
     item.picUrl = item.coverImgUrl;
-    storage.setItem("CURRENT_PLAYLIST", item);
+    storage.setItem(CURRENT_PLAYLIST, item);
   }
 }
 </script>
