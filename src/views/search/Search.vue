@@ -10,6 +10,8 @@
           id="input"
           v-model="word"
           autocomplete="off"
+          @focus="isFocus = true"
+          @blur="isFocus = false"
         />
       </form>
     </div>
@@ -65,19 +67,23 @@
         </div>
       </div>
     </div>
+
+    <suggests :suggests="suggests" :word.sync="word" :search="pushSearch" />
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { getHots, searchSongs } from "../../api/search";
+import { Vue, Component, Watch } from "vue-property-decorator";
+import { getHots, searchSongs, getSuggests } from "../../api/search";
 import storage from "../../utils/storage";
 const SEARCH_HISTORYS = "SEARCH_HISTORYS";
 import InfiniteLoading from "../../components/InfiniteLoading.vue";
+import Suggests from "./Suggests.vue";
 
 @Component({
   components: {
-    InfiniteLoading
+    InfiniteLoading,
+    Suggests
   }
 })
 export default class extends Vue {
@@ -87,6 +93,30 @@ export default class extends Vue {
   page: number = 0;
   isSearch: boolean = false;
   historys: string[] = storage.getItem(SEARCH_HISTORYS) || [];
+  suggests: any[] = [];
+  isFocus: boolean = true;
+
+  @Watch("word") watchWord(val: string) {
+    if (val === "") {
+      this.isSearch = false;
+      this.list = [];
+      this.suggests = [];
+    } else {
+      if (this.isFocus) {
+        this.getSuggests();
+      }
+    }
+  }
+
+  @Watch("isFocus") watchIsFocus(val: boolean) {
+    if (val && this.word) {
+      this.getSuggests();
+    }
+
+    if (val === false) {
+      this.suggests = [];
+    }
+  }
 
   clear() {
     this.word = "";
@@ -97,6 +127,19 @@ export default class extends Vue {
     const res = await getHots();
 
     this.hots = res.data.result.hots;
+  }
+
+  async getSuggests() {
+    const res = await getSuggests(this.word);
+
+    const { albums, artists, playlists, songs } = res.data.result;
+    const suggests = (artists || []).concat(
+      songs || [],
+      playlists || [],
+      albums || []
+    );
+
+    this.suggests = suggests.slice(0, 10);
   }
 
   pushHistory(word: string) {
