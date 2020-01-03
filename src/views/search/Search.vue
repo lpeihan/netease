@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <InfiniteLoading @infinite="loadmore" />
+      <InfiniteLoading @infinite="loadmore" immediate />
     </div>
 
     <div class="search-other" v-else-if="hots.length">
@@ -181,8 +181,6 @@ export default class extends Vue {
         state.loaded();
       }
 
-      // 单纯的数据展示，不需要 vue 来劫持我们的数据。
-      // 需要注意的是，引用不会被冻结，所有每次引用改变，视图还是会更新
       this.list = this.list.concat(list);
     } catch (err) {
       state.complete();
