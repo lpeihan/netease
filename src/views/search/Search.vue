@@ -14,11 +14,33 @@
       </form>
     </div>
 
-    <div class="search-normal" v-if="hots.length">
+    <div class="search-normal" v-if="isSearch">
+      <div class="song-list">
+        <div class="song-item" v-for="item in list" :key="item.id">
+          <div class="name">{{ item.name }}</div>
+          <div class="desc">
+            <span class="singer">
+              {{ item.artists.map(i => i.name).join("/") }}
+            </span>
+            -
+            <span class="alias">{{ item.album.name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <InfiniteLoading @infinite="loadmore" />
+    </div>
+
+    <div class="search-other" v-else-if="hots.length">
       <div class="hots-wrapper" v-if="hots.length">
         <div class="hots-title">热门搜索</div>
         <div class="hots-list">
-          <div class="hot-item" v-for="hot in hots" :key="hot.first">
+          <div
+            class="hot-item"
+            v-for="hot in hots"
+            :key="hot.first"
+            @click="clickHot(hot.first)"
+          >
             {{ hot.first }}
           </div>
         </div>
@@ -31,7 +53,12 @@
         </div>
 
         <div class="historys-list">
-          <div class="history-item" v-for="history in historys" :key="history">
+          <div
+            class="history-item"
+            v-for="history in historys"
+            :key="history"
+            @click="clickHistory(history)"
+          >
             <icon name="clock" />
             <span class="name">{{ history }}</span>
           </div>
@@ -43,14 +70,22 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { getHots } from "../../api/search";
+import { getHots, searchSongs } from "../../api/search";
 import storage from "../../utils/storage";
 const SEARCH_HISTORYS = "SEARCH_HISTORYS";
+import InfiniteLoading from "../../components/InfiniteLoading.vue";
 
-@Component
+@Component({
+  components: {
+    InfiniteLoading
+  }
+})
 export default class extends Vue {
   word: string = "";
   hots: any[] = [];
+  list: any[] = [];
+  page: number = 0;
+  isSearch: boolean = false;
   historys: string[] = storage.getItem(SEARCH_HISTORYS) || [];
 
   clear() {
@@ -84,12 +119,83 @@ export default class extends Vue {
     storage.removeItem(SEARCH_HISTORYS);
   }
 
-  async search(word: string) {
-    this.pushHistory(word);
+  pushSearch() {
+    if (this.word === "") {
+      return;
+    }
+
+    if (this.word === this.$route.query.word) {
+      this.search();
+    } else {
+      this.$router.replace({ name: "search", query: { word: this.word } });
+    }
+  }
+
+  clickHistory(word: string) {
+    this.word = word;
+    this.pushSearch();
+  }
+
+  clickHot(word: string) {
+    this.word = word;
+    this.pushSearch();
+  }
+
+  async search() {
+    if (this.word === "") {
+      return;
+    }
+    this.isSearch = false;
+    this.page = 0;
+    this.list = [];
+    this.pushHistory(this.word);
+
+    this.$nextTick(() => {
+      this.isSearch = true;
+    });
+  }
+
+  async loadmore(state: any) {
+    if (this.word === "") {
+      return;
+    }
+
+    try {
+      ++this.page;
+      const res = await searchSongs({
+        keywords: this.word,
+        offset: this.list.length
+      });
+
+      const list = res.data.result.songs;
+
+      if (this.page === 1 && list.length === 0) {
+        state.complete();
+        return;
+      }
+
+      if (list.length < 20) {
+        state.loaded();
+        state.complete();
+      } else {
+        state.loaded();
+      }
+
+      // 单纯的数据展示，不需要 vue 来劫持我们的数据。
+      // 需要注意的是，引用不会被冻结，所有每次引用改变，视图还是会更新
+      this.list = this.list.concat(list);
+    } catch (err) {
+      state.complete();
+    }
   }
 
   async created() {
     this.getHots();
+
+    if (this.$route.query.word) {
+      this.word = `${this.$route.query.word}`;
+      this.search();
+    }
   }
 }
 </script>
@@ -111,6 +217,7 @@ export default class extends Vue {
     display: flex;
     align-items: center;
     padding: 0 @padding-m;
+    z-index: 10;
 
     .icon-delete {
       color: @white;
@@ -142,6 +249,25 @@ export default class extends Vue {
   }
 
   &-normal {
+    .song-list {
+      .song-item {
+        padding: @padding-l;
+        position: relative;
+
+        .name {
+          font-size: 15px;
+        }
+
+        .desc {
+          color: @text-color-2;
+          font-size: 13px;
+          margin-top: 5px;
+        }
+      }
+    }
+  }
+
+  &-other {
     .hots-wrapper {
       padding: 20px 0 12px 15px;
       .hots-title {

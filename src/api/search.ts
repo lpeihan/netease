@@ -14,3 +14,22 @@ export function getSuggests(keywords: string) {
     }
   });
 }
+
+export function searchSongs({
+  keywords = "",
+  offset = 0,
+  limit = 20
+}: {
+  keywords: string;
+  offset: number;
+  limit?: number;
+}) {
+  return request({
+    url: "/search",
+    params: {
+      keywords,
+      offset,
+      limit
+    }
+  });
+}

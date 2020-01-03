@@ -56,7 +56,7 @@ export default class extends Vue {
   @Prop({ type: Number, default: 10 }) distance: number;
   @Prop({ type: Boolean, default: false }) immediate: boolean;
   @Prop({ type: Boolean, default: true }) loading: boolean;
-  @Prop({ type: String, default: "加载中" }) loadingText: string;
+  @Prop({ type: String, default: "加载中..." }) loadingText: string;
   @Prop({ type: String, default: "到底啦" }) noMoreText: string;
   @Prop({ type: String, default: "好像什么东西也没有..." }) emptyText: string;
   @Prop({ type: String, default: "网络好像出错了..." }) errorText: string;
