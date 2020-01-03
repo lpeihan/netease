@@ -112,12 +112,6 @@ export default class extends Vue {
     align-items: center;
     padding: 0 @padding-m;
 
-    .icon-back {
-      color: @white;
-      width: 26px;
-      height: 26px;
-    }
-
     .icon-delete {
       color: @white;
       position: absolute;

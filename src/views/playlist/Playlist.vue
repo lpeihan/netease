@@ -1,17 +1,13 @@
 <template>
   <div class="playlist">
     <icon name="back" @click="$router.go(-1)"></icon>
-    <div class="navbar">
+
+    <div class="navbar" :style="{ opacity: this.percent }">
       <div
         class="filter"
-        :style="{
-          backgroundImage: `url(${playlist.picUrl})`,
-          opacity: this.percent
-        }"
+        :style="{ backgroundImage: `url(${playlist.picUrl})` }"
       ></div>
-      <div class="name" :style="{ opacity: this.percent }">
-        {{ playlist.name }}
-      </div>
+      {{ playlist.name }}
     </div>
 
     <div class="playlist-header">
@@ -99,9 +95,6 @@ export default class extends Vue {
     position: fixed;
     top: 14px;
     left: @padding-l;
-    width: 28px;
-    height: 28px;
-    color: @white;
     z-index: 3;
   }
 

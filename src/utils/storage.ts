@@ -2,6 +2,7 @@ type StoreType = "localStorage" | "sessionStorage";
 
 class Store {
   store: any;
+  static CURRENT_PLAYLIST = "CURRENT_PLAYLIST";
 
   constructor(type: StoreType) {
     this.store = window[type];
