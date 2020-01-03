@@ -19,14 +19,17 @@
     <div class="search-normal" v-if="isSearch">
       <div class="song-list">
         <div class="song-item" v-for="item in list" :key="item.id">
-          <div class="name">{{ item.name }}</div>
-          <div class="desc">
-            <span class="singer">
-              {{ item.artists.map(i => i.name).join("/") }}
-            </span>
-            -
-            <span class="alias">{{ item.album.name }}</span>
+          <div class="left-info">
+            <div class="name">{{ item.name }}</div>
+            <div class="desc">
+              <span class="singer">
+                {{ item.artists.map(i => i.name).join("/") }}
+              </span>
+              -
+              <span class="alias">{{ item.album.name }}</span>
+            </div>
           </div>
+          <icon name="more" />
         </div>
       </div>
 
@@ -212,19 +215,21 @@ export default class extends Vue {
 
       const list = res.data.result.songs;
 
-      if (this.page === 1 && list.length === 0) {
-        state.complete();
-        return;
-      }
+      setTimeout(() => {
+        if (this.page === 1 && list.length === 0) {
+          state.complete();
+          return;
+        }
 
-      if (list.length < 20) {
-        state.loaded();
-        state.complete();
-      } else {
-        state.loaded();
-      }
+        if (list.length < 20) {
+          state.loaded();
+          state.complete();
+        } else {
+          state.loaded();
+        }
 
-      this.list = this.list.concat(list);
+        this.list = this.list.concat(list);
+      }, 500);
     } catch (err) {
       state.complete();
     }
@@ -294,15 +299,21 @@ export default class extends Vue {
       .song-item {
         padding: @padding-l;
         position: relative;
+        display: flex;
+        align-items: center;
 
-        .name {
-          font-size: 15px;
-        }
+        .left-info {
+          flex: 1;
+          .name {
+            font-size: 15px;
+          }
 
-        .desc {
-          color: @text-color-2;
-          font-size: 13px;
-          margin-top: 5px;
+          .desc {
+            color: @text-color-2;
+            font-size: 13px;
+            margin-top: 5px;
+            .ellipsis();
+          }
         }
       }
     }

@@ -2,13 +2,19 @@
   <transition name="van-fade">
     <div class="suggests" v-if="suggests.length">
       <div
+        class="suggests-item van-hairline--bottom word"
+        @click="handleClick(word)"
+      >
+        搜"{{ word }}"
+      </div>
+      <div
         class="suggests-item van-hairline--bottom"
         v-for="(suggest, index) in suggests"
         :key="index"
-        @click="handleClick(suggest)"
+        @click="handleClick(suggest.name)"
       >
         <icon name="search" />
-        <span v-html="highlight(suggest.name)"></span>
+        <span>{{ suggest.name }}</span>
       </div>
     </div>
   </transition>
@@ -23,14 +29,14 @@ export default class extends Vue {
   @Prop({ default: "" }) word: string;
   @Prop({ default: () => {} }) search: () => {};
 
-  handleClick(suggest: any) {
-    this.$emit("update:word", suggest.name);
+  handleClick(word: string) {
+    this.$emit("update:word", word);
     this.search();
   }
 
   highlight(text: string, word = this.word) {
     const reg = new RegExp(word, "g");
-    return text.replace(reg, `<span style="color: #1989fa;">${word}</span>`);
+    return text.replace(reg, `<span style="color: #337ab7;">${word}</span>`);
   }
 }
 </script>
@@ -52,7 +58,12 @@ export default class extends Vue {
     align-items: center;
     position: relative;
     font-size: 15px;
+    color: @text-color-1;
     .active();
+
+    &.word {
+      color: #337ab7;
+    }
 
     .icon-search {
       color: @text-color-3;

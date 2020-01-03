@@ -28,6 +28,10 @@ export default class extends Vue {
       this.transitionName = "slide-right";
     } else {
       this.transitionName = "van-fade";
+
+      if (to.name === "search") {
+        this.transitionName = "";
+      }
     }
   }
 
