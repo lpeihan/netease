@@ -51,9 +51,9 @@ const routes = [
     }
   },
   {
-    path: "/music-list",
+    path: "/playlists",
     component: () =>
-      import(/* webpackChunkName: "musicList" */ "../views/home/MusicList.vue"),
+      import(/* webpackChunkName: "musicList" */ "../views/home/Playlists.vue"),
     meta: {
       index: 2
     }

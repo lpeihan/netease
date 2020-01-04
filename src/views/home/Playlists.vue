@@ -1,10 +1,10 @@
 <template>
-  <div class="music-list">
+  <div class="playlists">
     <v-header title="歌单广场" />
 
     <van-tabs animated swipeable line-width="0.8rem">
       <van-tab v-for="tab in tabs" :key="tab.cid" :title="tab.title">
-        <music-item :title="tab.title" />
+        <playlist-tab :title="tab.title" />
       </van-tab>
     </van-tabs>
   </div>
@@ -13,12 +13,12 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import VHeader from "../../components/Header.vue";
-import MusicItem from "./MusicItem.vue";
+import PlaylistTab from "./PlaylistTab.vue";
 
 @Component({
   components: {
     VHeader,
-    MusicItem
+    PlaylistTab
   }
 })
 export default class extends Vue {
@@ -35,7 +35,7 @@ export default class extends Vue {
 </script>
 
 <style lang="less" scoped>
-.music-list {
+.playlists {
   padding-top: @header-height;
 
   /deep/.van-tab--active {

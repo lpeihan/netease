@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { getPlaylist } from "../../api/recommends";
+import { getPlaylist } from "../../api/playlist";
 import { createSong } from "../../services/song";
 import Playlist from "./Playlist.vue";
 import storage, { CURRENT_PLAYLIST } from "../../utils/storage";

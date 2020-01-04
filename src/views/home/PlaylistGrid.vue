@@ -1,10 +1,10 @@
 <template>
-  <div class="music-grid">
+  <div class="playlist-grid">
     <div class="title" v-if="title">{{ title }}</div>
 
-    <div class="music-wrapper">
+    <div class="playlist-wrapper">
       <div
-        class="music-item"
+        class="playlist-item"
         v-for="(item, index) in list"
         :key="index"
         @click="select(item)"
@@ -36,7 +36,7 @@ export default class extends Vue {
 </script>
 
 <style lang="less" scoped>
-.music-grid {
+.playlist-grid {
   .title {
     font-size: @font-size-m;
     padding: @padding-m;

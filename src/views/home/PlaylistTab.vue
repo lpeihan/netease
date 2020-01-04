@@ -1,20 +1,20 @@
 <template>
-  <div class="music-tab">
-    <MusicGrid :list="list" />
-    <InfiniteLoading @infinite="loadmore" immediate />
+  <div class="playlist-tab">
+    <playlist-grid :list="list" />
+    <infinite-loading @infinite="loadmore" immediate />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import { getMusicList, Cat } from "../../api/recommends";
+import { getPlaylists, Cat } from "../../api/playlist";
 import InfiniteLoading from "../../components/InfiniteLoading.vue";
-import MusicGrid from "./MusicGrid.vue";
+import PlaylistGrid from "./PlaylistGrid.vue";
 
 @Component({
   components: {
     InfiniteLoading,
-    MusicGrid
+    PlaylistGrid
   }
 })
 export default class extends Vue {
@@ -26,7 +26,7 @@ export default class extends Vue {
   async loadmore(state: any) {
     try {
       ++this.page;
-      const res = await getMusicList({ cat: this.title, limit: 30 });
+      const res = await getPlaylists({ cat: this.title, limit: 30 });
 
       const list = res.data.playlists;
 
@@ -51,7 +51,7 @@ export default class extends Vue {
 </script>
 
 <style lang="less" scoped>
-.music-tab {
+.playlist-tab {
   padding-top: @padding-l;
 }
 </style>

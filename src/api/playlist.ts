@@ -6,7 +6,7 @@ export function getBanners() {
   });
 }
 
-export function getRecommends() {
+export function getPersonalized() {
   return request({
     url: "/personalized"
   });
@@ -23,7 +23,7 @@ export function getPlaylist(id: string) {
 
 export type Cat = "华语" | "古风" | "欧美" | "流行" | "轻音乐" | "民谣";
 
-export function getMusicList(
+export function getPlaylists(
   data: {
     cat?: Cat;
     limit?: number;

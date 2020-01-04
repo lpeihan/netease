@@ -45,7 +45,7 @@
               </li>
             </ul>
 
-            <music-grid title="推荐歌单" :list="recommends" />
+            <playlist-grid title="推荐歌单" :list="personalizeds" />
           </div>
         </van-tab>
 
@@ -64,8 +64,8 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import Rank from "../rank/Rank.vue";
 import Singers from "../singers/Singers.vue";
 import UserDrawer from "../user/UserDrawer.vue";
-import { getBanners, getRecommends } from "../../api/recommends";
-import MusicGrid from "./MusicGrid.vue";
+import { getBanners, getPersonalized } from "../../api/playlist";
+import PlaylistGrid from "./PlaylistGrid.vue";
 
 @Component({
   name: "home",
@@ -73,13 +73,13 @@ import MusicGrid from "./MusicGrid.vue";
     Rank,
     Singers,
     UserDrawer,
-    MusicGrid
+    PlaylistGrid
   }
 })
 export default class extends Vue {
   active: number = 0;
   banners: any = [];
-  recommends: any = [];
+  personalizeds: any = [];
   entries: any = [
     { text: "私人fm", icon: "fm", to: "/rank" },
     { text: "每日推荐", icon: "calendar", to: "/rank" },
@@ -97,15 +97,15 @@ export default class extends Vue {
     this.banners = res.data.banners;
   }
 
-  async getRecommends() {
-    const res = await getRecommends();
+  async getPersonalized() {
+    const res = await getPersonalized();
 
-    this.recommends = res.data.result;
+    this.personalizeds = res.data.result;
   }
 
   created() {
     this.getBanners();
-    this.getRecommends();
+    this.getPersonalized();
   }
 }
 </script>
