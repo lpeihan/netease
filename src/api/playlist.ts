@@ -38,3 +38,9 @@ export function getPlaylists(
     _loading: false
   });
 }
+
+export function getNewSong() {
+  return request({
+    url: "/personalized/newsong"
+  });
+}

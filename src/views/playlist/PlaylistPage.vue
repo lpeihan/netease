@@ -1,5 +1,5 @@
 <template>
-  <playlist
+  <playlist-base
     :title="playlist.name"
     :image="playlist.picUrl"
     :avatar="avatar"
@@ -12,12 +12,12 @@
 import { Vue, Component } from "vue-property-decorator";
 import { getPlaylist } from "../../api/playlist";
 import { createSong } from "../../services/song";
-import Playlist from "./Playlist.vue";
+import PlaylistBase from "./PlaylistBase.vue";
 import storage, { CURRENT_PLAYLIST } from "../../utils/storage";
 
 @Component({
   components: {
-    Playlist
+    PlaylistBase
   }
 })
 export default class extends Vue {

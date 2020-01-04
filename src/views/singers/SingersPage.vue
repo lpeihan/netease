@@ -1,5 +1,5 @@
 <template>
-  <playlist
+  <playlist-base
     :title="
       playlist.alias ? playlist.name + ' ' + playlist.alias : playlist.name
     "
@@ -10,14 +10,14 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import Playlist from "../playlist/Playlist.vue";
+import PlaylistBase from "../playlist/PlaylistBase.vue";
 import { getSingersDetail } from "../../api/singers";
 import { createSong } from "../../services/song";
 import storage, { CURRENT_PLAYLIST } from "../../utils/storage";
 
 @Component({
   components: {
-    Playlist
+    PlaylistBase
   }
 })
 export default class extends Vue {

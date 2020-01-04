@@ -42,12 +42,12 @@ export default class extends Vue {
     padding: @padding-m;
   }
 
-  .music-wrapper {
+  .playlist-wrapper {
     display: flex;
     padding: 0 @padding;
     flex-wrap: wrap;
 
-    .music-item {
+    .playlist-item {
       width: calc(33.33% - 7px);
       margin: 0 @padding @padding-l 0;
 

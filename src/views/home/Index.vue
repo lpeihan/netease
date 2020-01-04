@@ -19,7 +19,7 @@
         line-width="1.1rem"
       >
         <van-tab title="推荐">
-          <div class="recommends" v-if="banners.length && recommends.length">
+          <div class="recommends" v-if="banners.length && personalizeds.length">
             <div class="recommends-banners">
               <van-swipe :autoplay="3000">
                 <van-swipe-item
@@ -65,7 +65,7 @@ import Rank from "../rank/Rank.vue";
 import Singers from "../singers/Singers.vue";
 import UserDrawer from "../user/UserDrawer.vue";
 import { getBanners, getPersonalized } from "../../api/playlist";
-import PlaylistGrid from "./PlaylistGrid.vue";
+import PlaylistGrid from "../playlist/PlaylistGrid.vue";
 
 @Component({
   name: "home",
@@ -81,9 +81,9 @@ export default class extends Vue {
   banners: any = [];
   personalizeds: any = [];
   entries: any = [
-    { text: "私人fm", icon: "fm", to: "/rank" },
-    { text: "每日推荐", icon: "calendar", to: "/rank" },
-    { text: "歌单", icon: "disc", to: "/music-list" },
+    { text: "私人FM", icon: "fm", to: "/rank" },
+    { text: "推荐音乐", icon: "calendar", to: "/new-song" },
+    { text: "歌单广场", icon: "disc", to: "/playlists" },
     { text: "排行榜", icon: "rank", to: "/rank" }
   ];
 
