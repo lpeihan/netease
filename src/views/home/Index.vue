@@ -19,14 +19,39 @@
         line-width="1.1rem"
       >
         <van-tab title="推荐">
-          <recommends />
+          <div class="recommends" v-if="banners.length && recommends.length">
+            <div class="recommends-banners">
+              <van-swipe :autoplay="3000">
+                <van-swipe-item
+                  v-for="banner in banners"
+                  :key="banner.imageUrl"
+                >
+                  <img :src="banner.imageUrl" class="banner-item" />
+                </van-swipe-item>
+              </van-swipe>
+            </div>
+
+            <ul class="recommends-entry van-hairline--bottom">
+              <li
+                class="entry-item"
+                v-for="(entry, index) in entries"
+                :key="index"
+                @click="$router.push(entry.to)"
+              >
+                <div class="circle">
+                  <icon :name="entry.icon"></icon>
+                </div>
+                <p class="text">{{ entry.text }}</p>
+              </li>
+            </ul>
+
+            <music-grid title="推荐歌单" :list="recommends" />
+          </div>
         </van-tab>
-        <van-tab title="排行">
-          <rank />
-        </van-tab>
-        <van-tab title="歌手">
-          <singers />
-        </van-tab>
+
+        <van-tab title="排行"><rank /></van-tab>
+
+        <van-tab title="歌手"><singers /></van-tab>
       </van-tabs>
     </div>
 
@@ -36,25 +61,51 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import Recommends from "../recommends/Recommends.vue";
 import Rank from "../rank/Rank.vue";
 import Singers from "../singers/Singers.vue";
 import UserDrawer from "../user/UserDrawer.vue";
+import { getBanners, getRecommends } from "../../api/recommends";
+import MusicGrid from "./MusicGrid.vue";
 
 @Component({
   name: "home",
   components: {
-    Recommends,
     Rank,
     Singers,
-    UserDrawer
+    UserDrawer,
+    MusicGrid
   }
 })
 export default class extends Vue {
   active: number = 0;
+  banners: any = [];
+  recommends: any = [];
+  entries: any = [
+    { text: "私人fm", icon: "fm", to: "/rank" },
+    { text: "每日推荐", icon: "calendar", to: "/rank" },
+    { text: "歌单", icon: "disc", to: "/music-list" },
+    { text: "排行榜", icon: "rank", to: "/rank" }
+  ];
 
   openUserDrawer() {
     (this.$refs.userDrawer as any).open();
+  }
+
+  async getBanners() {
+    const res = await getBanners();
+
+    this.banners = res.data.banners;
+  }
+
+  async getRecommends() {
+    const res = await getRecommends();
+
+    this.recommends = res.data.result;
+  }
+
+  created() {
+    this.getBanners();
+    this.getRecommends();
   }
 }
 </script>
@@ -114,6 +165,61 @@ export default class extends Vue {
         background-color: @white;
         bottom: 22px;
         height: 2px;
+      }
+    }
+  }
+
+  .recommends {
+    &-banners {
+      padding: 7px 0;
+      min-height: 145px;
+      background: linear-gradient(
+        @primary-color,
+        @primary-color 70%,
+        @white 70%,
+        @white
+      );
+
+      /deep/.van-swipe-item {
+        border-radius: @border-radius-m;
+        padding: 0 @padding;
+        overflow: hidden;
+      }
+
+      /deep/.van-swipe__indicator--active {
+        background-color: @primary-color;
+      }
+
+      .banner-item {
+        display: block;
+        border-radius: @border-radius-m;
+      }
+    }
+
+    &-entry {
+      display: flex;
+      padding: 8px 0 12px;
+
+      .entry-item {
+        flex: 1;
+        text-align: center;
+
+        .circle {
+          .size(42px, 42px);
+          background: linear-gradient(90deg, #fb5a52, @primary-color);
+          border-radius: 50%;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          color: @white;
+
+          .icon {
+            .size(22px, 22px);
+          }
+        }
+        .text {
+          margin-top: 8px;
+        }
       }
     }
   }
