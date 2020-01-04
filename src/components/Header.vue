@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="header" :class="{ theme }">
     <icon name="back" @click="$router.go(-1)" />
     <div class="title">{{ title }}</div>
   </div>
@@ -11,6 +11,7 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 @Component
 export default class extends Vue {
   @Prop({ default: "网易云音乐" }) title: string;
+  @Prop({ default: false }) theme: boolean;
 }
 </script>
 
@@ -34,6 +35,15 @@ export default class extends Vue {
   .title {
     font-size: @font-size-m + 1;
     margin-left: 15px;
+  }
+
+  &.theme {
+    background: @primary-color;
+    color: @white;
+
+    .icon-back {
+      color: @white;
+    }
   }
 }
 </style>

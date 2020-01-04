@@ -36,7 +36,17 @@ const routes = [
     path: "/singers/:id",
     component: () =>
       import(
-        /* webpackChunkName: "playlist" */ "../views/singers/SingersPage.vue"
+        /* webpackChunkName: "singers" */ "../views/singers/SingersDetail.vue"
+      ),
+    meta: {
+      index: 2
+    }
+  },
+  {
+    path: "/singers",
+    component: () =>
+      import(
+        /* webpackChunkName: "singers" */ "../views/singers/SingersPage.vue"
       ),
     meta: {
       index: 2
@@ -63,7 +73,9 @@ const routes = [
   {
     path: "/new-song",
     component: () =>
-      import(/* webpackChunkName: "newSong" */ "../views/home/NewSong.vue"),
+      import(
+        /* webpackChunkName: "newSong" */ "../views/playlist/PlaylistNew.vue"
+      ),
     meta: {
       index: 2
     }

@@ -1,7 +1,7 @@
 <template>
   <playlist-base
     :title="playlist.name"
-    :image="playlist.picUrl"
+    :image="playlist.picUrl || playlist.coverImgUrl"
     :avatar="avatar"
     :nickname="nickname"
     :songs="songs"

@@ -81,10 +81,10 @@ export default class extends Vue {
   banners: any = [];
   personalizeds: any = [];
   entries: any = [
-    { text: "私人FM", icon: "fm", to: "/rank" },
-    { text: "推荐音乐", icon: "calendar", to: "/new-song" },
     { text: "歌单广场", icon: "disc", to: "/playlists" },
-    { text: "排行榜", icon: "rank", to: "/rank" }
+    { text: "排行榜", icon: "rank", to: "/rank" },
+    { text: "推荐音乐", icon: "calendar", to: "/new-song" },
+    { text: "歌手", icon: "singer", to: "/singers" }
   ];
 
   openUserDrawer() {
