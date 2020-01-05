@@ -137,7 +137,7 @@ export default class extends Vue {
   }
 
   mounted() {
-    document.addEventListener("popstate", this.close);
+    addEventListener("popstate", this.close);
     document.addEventListener("touchend", this.firstplay);
   }
 }
