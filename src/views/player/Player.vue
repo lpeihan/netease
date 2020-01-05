@@ -1,6 +1,6 @@
 <template>
   <div class="player" v-if="playlist.length">
-    <transition name="full">
+    <transition name="full" @enter="enter" @leave="leave">
       <div class="player-full" v-show="fullScreen" @touchmove.prevent>
         <div
           class="overlay"
@@ -14,8 +14,8 @@
         </div>
 
         <div class="song-content">
-          <div class="cd-wrapper" :class="playing ? 'play' : 'pause'">
-            <img :src="currentSong.image" />
+          <div class="cd-wrapper" ref="cd">
+            <img :src="currentSong.image" :class="rotateCls" />
           </div>
         </div>
 
@@ -43,7 +43,7 @@
         @click="setFullScreen(true)"
         :src="currentSong.image"
         class="mini-pic"
-        :class="playing ? 'play' : 'pause'"
+        :class="rotateCls"
       />
 
       <div class="song-info">
@@ -52,7 +52,12 @@
       </div>
     </div>
 
-    <playlist-popup ref="playlistPopup" />
+    <playlist-popup
+      ref="playlistPopup"
+      :changeMode="changeMode"
+      :modeText="modeText"
+      :mode="mode"
+    />
     <audio
       id="audio"
       ref="audio"
@@ -68,11 +73,13 @@ import { Vue, Component, Watch } from "vue-property-decorator";
 import { Getter, Action } from "vuex-class";
 import { getSong } from "../../api/song";
 import PlaylistPopup from "../../components/PlaylistPopup.vue";
+import animations from "create-keyframe-animation";
+import { getRealSize } from "../../utils/dom";
 
-enum MODE {
-  loop = "loop",
-  once = "once"
-}
+const MODE = {
+  loop: "loop",
+  once: "once"
+};
 
 @Component({
   components: {
@@ -86,12 +93,26 @@ export default class extends Vue {
   @Getter("playing") playing: boolean;
   @Getter("currentIndex") currentIndex: number;
   url: string = "";
-  mode: MODE = MODE.loop;
+  mode: string = MODE.loop;
 
   @Action("setPlaying") setPlaying: any;
   @Action("setFullScreen") setFullScreen: any;
   @Action("nextSong") nextSong: any;
   @Action("prevSong") prevSong: any;
+
+  get modeText() {
+    if (this.mode === MODE.loop) {
+      return "循环播放";
+    } else if (this.mode === MODE.once) {
+      return "单曲循环";
+    }
+
+    return "";
+  }
+
+  get rotateCls() {
+    return this.playing ? "play" : "play pause";
+  }
 
   async getSong(id: string) {
     this.url = (await getSong(id)).data.data[0].url;
@@ -138,6 +159,57 @@ export default class extends Vue {
     } else {
       this.mode = MODE.loop;
     }
+
+    this.$toast(this.modeText);
+  }
+
+  enter(el: any, done: () => {}) {
+    const { x, y, scale } = this.getPosAndScale();
+    const animation = {
+      0: {
+        transform: `translate3d(${x}px,${y}px,0) scale(${scale})`
+      },
+      60: {
+        transform: `translate3d(0,0,0) scale(1.1)`
+      },
+      100: {
+        transform: `translate3d(0,0,0) scale(1)`
+      }
+    };
+    animations.registerAnimation({
+      name: "move",
+      animation,
+      presets: {
+        duration: 400,
+        easing: "linear"
+      }
+    });
+    animations.runAnimation(this.$refs.cd, "move", () => {
+      animations.unregisterAnimation("move");
+      (this.$refs.cd as any).style.animation = "";
+      done();
+    });
+  }
+
+  leave(el: any, done: () => {}) {
+    const { x, y, scale } = this.getPosAndScale();
+    const cd = this.$refs.cd as any;
+    cd.style.transition = "all 0.4s";
+    cd.style["transform"] = `translate3d(${x}px,${y}px,0) scale(${scale})`;
+    cd.addEventListener("transitionend", () => {
+      cd.style.transition = "";
+      cd.style["transform"] = "";
+      done();
+    });
+  }
+
+  getPosAndScale() {
+    const width = getRealSize(280);
+    return {
+      x: -(innerWidth / 2 - getRealSize(40)),
+      y: innerHeight - getRealSize(74 + 50) - width / 2 - getRealSize(30),
+      scale: getRealSize(40) / width
+    };
   }
 
   @Watch("currentSong") async watchCurrentSong(newSong: any, oldSong: any) {
@@ -282,16 +354,16 @@ export default class extends Vue {
         border-radius: 50%;
         border: 8px solid rgba(255, 255, 255, 0.2);
 
-        &.play {
-          animation: rotate 20s linear infinite;
-        }
-        &.pause {
-          animation-play-state: paused;
-        }
-
         img {
           width: 100%;
           border-radius: 50%;
+
+          &.play {
+            animation: rotate 20s linear infinite;
+          }
+          &.pause {
+            animation-play-state: paused;
+          }
         }
       }
     }

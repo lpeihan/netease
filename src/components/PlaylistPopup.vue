@@ -2,10 +2,10 @@
   <van-popup v-model="show" position="bottom" round>
     <div class="playlist-popup">
       <div class="header van-hairline--bottom">
-        <div class="mode-wrapper">
-          <icon name="loop" />
+        <div class="mode-wrapper" @click="changeMode">
+          <icon :name="mode" />
           <div class="mode">
-            循环播放 <span>({{ playlist.length }}首)</span>
+            {{ modeText }} <span>({{ playlist.length }}首)</span>
           </div>
         </div>
 
@@ -32,11 +32,15 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import { Getter, Action } from "vuex-class";
 
 @Component
 export default class extends Vue {
+  @Prop({ default: "" }) modeText: string;
+  @Prop({ default: "" }) mode: string;
+  @Prop({}) changeMode: () => {};
+
   show: boolean = false;
 
   @Getter("playlist") playlist: any;
