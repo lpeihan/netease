@@ -1,6 +1,6 @@
 <template>
   <van-popup v-model="show" position="bottom" round>
-    <div class="playlist-popup">
+    <div class="player-playlist">
       <div class="header van-hairline--bottom">
         <div class="mode-wrapper" @click="changeMode">
           <icon :name="mode" />
@@ -60,7 +60,7 @@ export default class extends Vue {
 </script>
 
 <style lang="less" scoped>
-.playlist-popup {
+.player-playlist {
   max-height: 500px;
   min-height: 400px;
   display: flex;

@@ -52,8 +52,8 @@
       </div>
     </div>
 
-    <playlist-popup
-      ref="playlistPopup"
+    <player-playlist
+      ref="playerPlaylist"
       :changeMode="changeMode"
       :modeText="modeText"
       :mode="mode"
@@ -72,7 +72,7 @@
 import { Vue, Component, Watch } from "vue-property-decorator";
 import { Getter, Action } from "vuex-class";
 import { getSong } from "../../api/song";
-import PlaylistPopup from "../../components/PlaylistPopup.vue";
+import PlayerPlaylist from "./PlayerPlaylist.vue";
 import animations from "create-keyframe-animation";
 import { getRealSize } from "../../utils/dom";
 
@@ -83,7 +83,7 @@ const MODE = {
 
 @Component({
   components: {
-    PlaylistPopup
+    PlayerPlaylist
   }
 })
 export default class extends Vue {
@@ -135,7 +135,7 @@ export default class extends Vue {
   }
 
   openPlaylist() {
-    (this.$refs.playlistPopup as any).open();
+    (this.$refs.playerPlaylist as any).open();
   }
 
   canplay() {
@@ -370,26 +370,32 @@ export default class extends Vue {
 
     .footer {
       .top-btns {
-        padding: 10px 50px;
+        padding: 10px 60px;
         display: flex;
         justify-content: space-between;
 
-        .icon-comment {
-          width: 22px;
-          height: 22px;
+        .icon {
+          width: 24px;
+          height: 24px;
         }
       }
 
       .operations {
         display: flex;
-        padding: 20px 30px;
+        padding: 20px 40px;
         justify-content: space-between;
         align-items: center;
 
+        .icon-loop,
+        .icon-once {
+          width: 22px;
+          height: 22px;
+        }
+
         .icon-play,
         .icon-pause {
-          width: 36px;
-          height: 36px;
+          width: 38px;
+          height: 38px;
         }
       }
     }
