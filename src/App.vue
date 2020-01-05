@@ -67,6 +67,7 @@ export default class extends Vue {
   min-height: 100%;
   z-index: 1;
   background: @white;
+  padding-bottom: 70px;
 
   &.slide {
     &-left-enter,

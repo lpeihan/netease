@@ -55,3 +55,5 @@ export default store;
 
 // constants
 export const CURRENT_PLAYLIST = "CURRENT_PLAYLIST";
+export const PLAYLIST = "PLAYLIST";
+export const CURRENT_INDEX = "CURRENT_INDEX";

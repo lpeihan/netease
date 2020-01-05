@@ -1,43 +1,65 @@
 <template>
   <div class="player" v-if="playlist.length">
-    <div class="player-full" v-show="fullScreen" @touchmove.prevent>
-      <div
-        class="overlay"
-        :style="{ 'background-image': `url(${currentSong.image})` }"
-      ></div>
+    <transition name="full">
+      <div class="player-full" v-show="fullScreen" @touchmove.prevent>
+        <div
+          class="overlay"
+          :style="{ 'background-image': `url(${currentSong.image})` }"
+        ></div>
 
-      <div class="header">
-        <icon name="down" @click="back" />
-        <p class="name">{{ currentSong.name }}</p>
-        <p class="singer">{{ currentSong.singer }}</p>
-      </div>
+        <div class="header">
+          <icon name="down" @click="back" />
+          <p class="name">{{ currentSong.name }}</p>
+          <p class="singer">{{ currentSong.singer }}</p>
+        </div>
 
-      <div class="song-content">
-        <div class="cd-wrapper" :class="playing ? 'play' : 'pause'">
-          <img :src="currentSong.image" />
+        <div class="song-content">
+          <div class="cd-wrapper" :class="playing ? 'play' : 'pause'">
+            <img :src="currentSong.image" />
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="top-btns">
+            <icon name="unfavorite" />
+            <icon name="download" />
+            <icon name="comment" />
+            <icon name="more" />
+          </div>
+
+          <div class="operations">
+            <icon :name="mode" @click="changeMode" />
+            <icon name="prev" @click="prevSong" />
+            <icon :name="playing ? 'pause' : 'play'" @click="togglePlay" />
+            <icon name="next" @click="nextSong" />
+            <icon name="playlist" @click="openPlaylist" />
+          </div>
         </div>
       </div>
+    </transition>
 
-      <div class="footer">
-        <div class="top-btns">
-          <icon name="unfavorite" />
-          <icon name="download" />
-          <icon name="comment" />
-          <icon name="more" />
-        </div>
+    <div class="player-mini">
+      <img
+        @click="setFullScreen(true)"
+        :src="currentSong.image"
+        class="mini-pic"
+        :class="playing ? 'play' : 'pause'"
+      />
 
-        <div class="operations">
-          <icon name="loop" />
-          <icon name="prev" @click="prevSong" />
-          <icon :name="playing ? 'pause' : 'play'" @click="togglePlay" />
-          <icon name="next" @click="nextSong" />
-          <icon name="playlist" @click="openPlaylist" />
-        </div>
+      <div class="song-info">
+        <div class="name">{{ currentSong.name }}</div>
+        <div class="singer">{{ currentSong.singer }}</div>
       </div>
     </div>
 
     <playlist-popup ref="playlistPopup" />
-    <audio id="audio" ref="audio" autoplay="autoplay" :src="url"></audio>
+    <audio
+      id="audio"
+      ref="audio"
+      :src="url"
+      @canplay="canplay"
+      @ended="ended"
+    ></audio>
   </div>
 </template>
 
@@ -46,6 +68,11 @@ import { Vue, Component, Watch } from "vue-property-decorator";
 import { Getter, Action } from "vuex-class";
 import { getSong } from "../../api/song";
 import PlaylistPopup from "../../components/PlaylistPopup.vue";
+
+enum MODE {
+  loop = "loop",
+  once = "once"
+}
 
 @Component({
   components: {
@@ -57,7 +84,9 @@ export default class extends Vue {
   @Getter("playlist") playlist: any[];
   @Getter("fullScreen") fullScreen: boolean;
   @Getter("playing") playing: boolean;
+  @Getter("currentIndex") currentIndex: number;
   url: string = "";
+  mode: MODE = MODE.loop;
 
   @Action("setPlaying") setPlaying: any;
   @Action("setFullScreen") setFullScreen: any;
@@ -86,6 +115,29 @@ export default class extends Vue {
 
   openPlaylist() {
     (this.$refs.playlistPopup as any).open();
+  }
+
+  canplay() {
+    (this.$refs.audio as any).play();
+  }
+
+  ended() {
+    const audio = this.$refs.audio as any;
+
+    if (this.mode === MODE.once) {
+      audio.currentTime = 0;
+      audio.play();
+    } else {
+      this.nextSong();
+    }
+  }
+
+  changeMode() {
+    if (this.mode === MODE.loop) {
+      this.mode = MODE.once;
+    } else {
+      this.mode = MODE.loop;
+    }
   }
 
   @Watch("currentSong") async watchCurrentSong(newSong: any, oldSong: any) {
@@ -127,7 +179,7 @@ export default class extends Vue {
     setTimeout(() => {
       const audio = this.$refs.audio as any;
 
-      if (audio) {
+      if (audio && this.playing) {
         audio.play();
         if (audio.src) {
           document.removeEventListener("touchend", this.firstplay);
@@ -137,6 +189,10 @@ export default class extends Vue {
   }
 
   mounted() {
+    if (this.currentSong.id) {
+      this.getSong(this.currentSong.id);
+    }
+
     addEventListener("popstate", this.close);
     document.addEventListener("touchend", this.firstplay);
   }
@@ -166,6 +222,31 @@ export default class extends Vue {
     color: @white;
     display: flex;
     flex-direction: column;
+
+    &.full {
+      &-enter-active,
+      &-leave-active {
+        transition: all @transition-time;
+
+        .header,
+        .footer {
+          transition: all @transition-time cubic-bezier(0.86, 0.18, 0.82, 1.32);
+        }
+      }
+
+      &-leave-to,
+      &-enter {
+        opacity: 0;
+
+        .header {
+          transform: translate3d(0, -100px, 0);
+        }
+
+        .footer {
+          transform: translate3d(0, 100px, 0);
+        }
+      }
+    }
 
     .overlay {
       .bg-filter(160px);
@@ -238,6 +319,42 @@ export default class extends Vue {
           width: 36px;
           height: 36px;
         }
+      }
+    }
+  }
+
+  &-mini {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: @white;
+    display: flex;
+    padding: 0 20px;
+    align-items: center;
+    height: 60px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+
+    .mini-pic {
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+
+      &.play {
+        animation: rotate 20s linear infinite;
+      }
+      &.pause {
+        animation-play-state: paused;
+      }
+    }
+
+    .song-info {
+      padding-left: 10px;
+
+      .singer {
+        color: @text-color-2;
+        font-size: @font-size-s;
       }
     }
   }

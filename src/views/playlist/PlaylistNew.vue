@@ -1,6 +1,6 @@
 <template>
   <playlist-base
-    title="新歌速递"
+    title="推荐音乐"
     :image="require('../../assets/images/bg.jpeg')"
     :songs="songs"
   />

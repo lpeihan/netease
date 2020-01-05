@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import storage, { PLAYLIST, CURRENT_INDEX } from "../utils/storage";
 
 import {
   SET_SCROLL_TOP,
@@ -14,8 +15,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     scrollTop: 0,
-    playlist: [],
-    currentIndex: -1,
+    playlist: storage.getItem(PLAYLIST) || [],
+    currentIndex: storage.getItem(CURRENT_INDEX),
     fullScreen: false,
     playing: false
   },
@@ -25,9 +26,11 @@ export default new Vuex.Store({
     },
     [SET_PLAYLIST](state, playlist) {
       state.playlist = playlist;
+      storage.setItem(PLAYLIST, playlist);
     },
     [SET_CURRENT_INDEX](state, currentIndex) {
       state.currentIndex = currentIndex;
+      storage.setItem(CURRENT_INDEX, currentIndex);
     },
     [SET_FULL_SCREEN](state, fullScreen) {
       state.fullScreen = fullScreen;
