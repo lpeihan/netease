@@ -5,6 +5,8 @@
         <router-view class="app-view" :key="$route.fullPath" />
       </keep-alive>
     </transition>
+
+    <player />
   </div>
 </template>
 
@@ -12,9 +14,13 @@
 import { throttle } from "lodash";
 import { Vue, Component, Watch } from "vue-property-decorator";
 import { Action } from "vuex-class";
+import Player from "./views/player/Player.vue";
 
 @Component({
-  name: "app"
+  name: "app",
+  components: {
+    Player
+  }
 })
 export default class extends Vue {
   keepAlive: string[] = ["home"];

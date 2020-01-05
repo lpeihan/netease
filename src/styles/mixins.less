@@ -27,7 +27,7 @@
   }
 }
 
-.bg-filter(@blur: 20px) {
+.bg-filter(@blur: 20px, @bg: rgba(7, 17, 27, 0.2)) {
   position: absolute;
   left: 0;
   right: 0;
@@ -44,6 +44,6 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(7, 17, 27, 0.2);
+    background: @bg;
   }
 }

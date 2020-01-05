@@ -40,11 +40,17 @@ export default new Vuex.Store({
     setScrollTop({ commit }, scrollTop) {
       commit(SET_SCROLL_TOP, scrollTop);
     },
-    selectPlay({ commit }, { list, index }) {
-      commit(SET_PLAYLIST, list);
-      commit(SET_CURRENT_INDEX, index);
+    selectPlay({ commit, state }, { list }) {
+      commit(SET_PLAYLIST, list.concat(state.playlist));
+      commit(SET_CURRENT_INDEX, 0);
       commit(SET_FULL_SCREEN, true);
       commit(SET_PLAYING, true);
+    },
+    setPlaying({ commit }, playing) {
+      commit(SET_PLAYING, playing);
+    },
+    setFullScreen({ commit }, fullScreen) {
+      commit(SET_FULL_SCREEN, fullScreen);
     }
   },
   getters: {

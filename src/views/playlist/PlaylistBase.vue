@@ -31,7 +31,7 @@
           class="item"
           v-for="(song, index) in songs"
           :key="index"
-          @click="select(index)"
+          @click="select(song)"
         >
           <div class="left-index">{{ index + 1 }}</div>
           <div class="middle-info">
@@ -62,17 +62,14 @@ export default class extends Vue {
 
   @Getter("scrollTop") scrollTop: number;
 
-  @Action("selectPlay") selectPlay: (payload: {
-    list: any[];
-    index: number;
-  }) => {};
+  @Action("selectPlay") selectPlay: (payload: { list: any[] }) => {};
 
   @Watch("scrollTop") function(val: number) {
     this.percent = Math.abs(val / (innerWidth * 0.6));
   }
 
-  select(index: number) {
-    this.selectPlay({ list: this.songs, index });
+  select(song: any) {
+    this.selectPlay({ list: [song] });
   }
 }
 </script>
