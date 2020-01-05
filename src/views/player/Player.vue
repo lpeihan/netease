@@ -1,6 +1,6 @@
 <template>
-  <div class="player" v-if="playlist.length" @touchmove.prevent>
-    <div class="player-full" v-show="fullScreen">
+  <div class="player" v-if="playlist.length">
+    <div class="player-full" v-show="fullScreen" @touchmove.prevent>
       <div
         class="overlay"
         :style="{ 'background-image': `url(${currentSong.image})` }"
@@ -28,15 +28,16 @@
 
         <div class="operations">
           <icon name="loop" />
-          <icon name="prev" />
+          <icon name="prev" @click="prevSong" />
           <icon :name="playing ? 'pause' : 'play'" @click="togglePlay" />
-          <icon name="next" />
-          <icon name="playlist" />
+          <icon name="next" @click="nextSong" />
+          <icon name="playlist" @click="openPlaylist" />
         </div>
       </div>
     </div>
 
-    <audio id="audio" ref="audio" autoplay :src="url"></audio>
+    <playlist-popup ref="playlistPopup" />
+    <audio id="audio" ref="audio" autoplay="autoplay" :src="url"></audio>
   </div>
 </template>
 
@@ -44,8 +45,13 @@
 import { Vue, Component, Watch } from "vue-property-decorator";
 import { Getter, Action } from "vuex-class";
 import { getSong } from "../../api/song";
+import PlaylistPopup from "../../components/PlaylistPopup.vue";
 
-@Component
+@Component({
+  components: {
+    PlaylistPopup
+  }
+})
 export default class extends Vue {
   @Getter("currentSong") currentSong: any;
   @Getter("playlist") playlist: any[];
@@ -55,6 +61,8 @@ export default class extends Vue {
 
   @Action("setPlaying") setPlaying: any;
   @Action("setFullScreen") setFullScreen: any;
+  @Action("nextSong") nextSong: any;
+  @Action("prevSong") prevSong: any;
 
   async getSong(id: string) {
     this.url = (await getSong(id)).data.data[0].url;
@@ -76,7 +84,11 @@ export default class extends Vue {
     history.go(-1);
   }
 
-  @Watch("currentSong") watchCurrentSong(newSong: any, oldSong: any) {
+  openPlaylist() {
+    (this.$refs.playlistPopup as any).open();
+  }
+
+  @Watch("currentSong") async watchCurrentSong(newSong: any, oldSong: any) {
     if (newSong.id === oldSong.id) {
       return;
     }
@@ -85,7 +97,8 @@ export default class extends Vue {
       return;
     }
 
-    this.getSong(newSong.id);
+    await this.getSong(newSong.id);
+    this.setPlaying(true);
   }
 
   @Watch("playing") watchPlaying(val: boolean) {
@@ -110,8 +123,22 @@ export default class extends Vue {
     }
   }
 
+  firstplay() {
+    setTimeout(() => {
+      const audio = this.$refs.audio as any;
+
+      if (audio) {
+        audio.play();
+        if (audio.src) {
+          document.removeEventListener("touchend", this.firstplay);
+        }
+      }
+    }, 1000);
+  }
+
   mounted() {
-    addEventListener("popstate", this.close);
+    document.addEventListener("popstate", this.close);
+    document.addEventListener("touchend", this.firstplay);
   }
 }
 </script>
@@ -141,14 +168,13 @@ export default class extends Vue {
     flex-direction: column;
 
     .overlay {
-      .bg-filter(80px);
+      .bg-filter(160px);
     }
 
     .header {
       position: relative;
       text-align: center;
-      padding: 15px 30px;
-      .ellipsis();
+      padding: 15px 50px;
 
       .icon-down {
         color: @white;
@@ -160,6 +186,7 @@ export default class extends Vue {
 
       .name {
         font-size: 17px;
+        .ellipsis();
       }
     }
 
