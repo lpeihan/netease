@@ -31,6 +31,7 @@
             :currentTime="currentTime"
             :duration="duration"
             :percent="percent"
+            @update="updateProgress"
           />
 
           <div class="operations">
@@ -63,7 +64,6 @@
       :changeMode="changeMode"
       :modeText="modeText"
       :mode="mode"
-      @update="updateProgress"
     />
     <audio
       id="audio"
@@ -348,7 +348,7 @@ export default class extends Vue {
     }
 
     .overlay {
-      .bg-filter(160px);
+      .bg-filter(80px);
     }
 
     .header {

@@ -27,7 +27,7 @@
   }
 }
 
-.bg-filter(@blur: 20px, @bg: rgba(7, 17, 27, 0.2)) {
+.bg-filter(@blur: 20px, @bg: rgba(7, 17, 27, 0.3)) {
   position: absolute;
   left: 0;
   right: 0;
@@ -35,7 +35,7 @@
   top: 0;
   background-size: cover;
   filter: blur(@blur);
-  transform: scaleY(1.5);
+  transform: scaleY(2);
   z-index: -1;
   &::before {
     content: "";
