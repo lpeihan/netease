@@ -57,6 +57,14 @@
         <div class="name">{{ currentSong.name }}</div>
         <div class="singer">{{ currentSong.singer }}</div>
       </div>
+
+      <div class="right-btns">
+        <progress-circle :percent="percent" @click.native="togglePlay">
+          <icon :name="playing ? 'mini-pause2' : 'mini-play2'" />
+        </progress-circle>
+
+        <icon name="playlist" @click="openPlaylist"></icon>
+      </div>
     </div>
 
     <player-playlist
@@ -84,6 +92,7 @@ import PlayerPlaylist from "./PlayerPlaylist.vue";
 import animations from "create-keyframe-animation";
 import { getRealSize } from "../../utils/dom";
 import ProgressBar from "../../components/ProgressBar.vue";
+import ProgressCircle from "../../components/ProgressCircle.vue";
 
 const MODE = {
   loop: "loop",
@@ -93,7 +102,8 @@ const MODE = {
 @Component({
   components: {
     PlayerPlaylist,
-    ProgressBar
+    ProgressBar,
+    ProgressCircle
   }
 })
 export default class extends Vue {
@@ -456,11 +466,21 @@ export default class extends Vue {
 
     .song-info {
       padding-left: 10px;
+      flex: 1;
 
       .singer {
         color: @text-color-2;
         font-size: @font-size-s;
       }
+    }
+
+    .right-btns {
+      width: 80px;
+      padding-right: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: @text-color-2;
     }
   }
 }
