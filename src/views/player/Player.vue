@@ -27,6 +27,12 @@
             <icon name="more" />
           </div>
 
+          <progress-bar
+            :currentTime="currentTime"
+            :duration="duration"
+            :percent="percent"
+          />
+
           <div class="operations">
             <icon :name="mode" @click="changeMode" />
             <icon name="prev" @click="prevSong" />
@@ -57,6 +63,7 @@
       :changeMode="changeMode"
       :modeText="modeText"
       :mode="mode"
+      @update="updateProgress"
     />
     <audio
       id="audio"
@@ -64,6 +71,7 @@
       :src="url"
       @canplay="canplay"
       @ended="ended"
+      @timeupdate="updateTime"
     ></audio>
   </div>
 </template>
@@ -75,6 +83,7 @@ import { getSong } from "../../api/song";
 import PlayerPlaylist from "./PlayerPlaylist.vue";
 import animations from "create-keyframe-animation";
 import { getRealSize } from "../../utils/dom";
+import ProgressBar from "../../components/ProgressBar.vue";
 
 const MODE = {
   loop: "loop",
@@ -83,7 +92,8 @@ const MODE = {
 
 @Component({
   components: {
-    PlayerPlaylist
+    PlayerPlaylist,
+    ProgressBar
   }
 })
 export default class extends Vue {
@@ -94,6 +104,8 @@ export default class extends Vue {
   @Getter("currentIndex") currentIndex: number;
   url: string = "";
   mode: string = MODE.loop;
+  currentTime: number = 0;
+  duration: number = 0;
 
   @Action("setPlaying") setPlaying: any;
   @Action("setFullScreen") setFullScreen: any;
@@ -112,6 +124,10 @@ export default class extends Vue {
 
   get rotateCls() {
     return this.playing ? "play" : "play pause";
+  }
+
+  get percent() {
+    return this.duration ? this.currentTime / this.duration : 0;
   }
 
   async getSong(id: string) {
@@ -140,6 +156,8 @@ export default class extends Vue {
 
   canplay() {
     (this.$refs.audio as any).play();
+
+    this.duration = (this.$refs.audio as any).duration;
   }
 
   ended() {
@@ -151,6 +169,15 @@ export default class extends Vue {
     } else {
       this.nextSong();
     }
+  }
+
+  updateTime(e: any) {
+    this.currentTime = e.target.currentTime;
+  }
+
+  updateProgress(percent: number) {
+    (this.$refs.audio as any).currentTime = percent * this.duration;
+    !this.playing && this.togglePlay();
   }
 
   changeMode() {
@@ -370,7 +397,7 @@ export default class extends Vue {
 
     .footer {
       .top-btns {
-        padding: 10px 60px;
+        padding: 20px 60px 30px;
         display: flex;
         justify-content: space-between;
 
@@ -382,7 +409,7 @@ export default class extends Vue {
 
       .operations {
         display: flex;
-        padding: 20px 40px;
+        padding: 20px 40px 30px;
         justify-content: space-between;
         align-items: center;
 
@@ -394,8 +421,8 @@ export default class extends Vue {
 
         .icon-play,
         .icon-pause {
-          width: 38px;
-          height: 38px;
+          width: 42px;
+          height: 42px;
         }
       }
     }

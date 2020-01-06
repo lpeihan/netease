@@ -1,3 +1,17 @@
+export function leftpad(
+  str: string | number,
+  len: number,
+  ch: string | number = " "
+) {
+  str = `${str}`;
+
+  for (let i = str.length; i < len; i++) {
+    str = ch + str;
+  }
+
+  return str;
+}
+
 // 获取 query
 export function getQueryString(name: string): string {
   const res = location.href.match(new RegExp("[?&]" + name + "=([^&#]+)", "i"));
