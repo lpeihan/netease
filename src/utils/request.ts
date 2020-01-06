@@ -8,10 +8,12 @@ let loadCount = 0; // 当前请求 loading 的数量
 const request = axios.create({
   timeout: 10000,
   baseURL: process.env.apiUrl,
+  // @ts-ignore
   _loading: true
 });
 
 request.interceptors.request.use(config => {
+  // @ts-ignore
   if (config._loading) {
     loadCount++;
     loading.open();
@@ -22,6 +24,7 @@ request.interceptors.request.use(config => {
 
 request.interceptors.response.use(
   res => {
+    // @ts-ignore
     if (res.config._loading && --loadCount <= 0) {
       loading.close();
     }
