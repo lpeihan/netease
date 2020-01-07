@@ -1,12 +1,26 @@
 <template>
   <div class="user-drawer">
     <van-popup v-model="show" position="left">
-      <div class="theme-list">
-        <van-radio-group v-model="color">
-          <van-radio :name="c.color" v-for="c in colorList" :key="c.key">
-            <span :style="{ color: c.color }">{{ c.key }}</span>
-          </van-radio>
-        </van-radio-group>
+      <div class="theme-wrapper">
+        <div class="theme-title">主题切换</div>
+        <div class="theme-list">
+          <div
+            class="theme-item"
+            v-for="c in colorList"
+            :key="c.key"
+            :style="{
+              backgroundColor: c.color
+            }"
+            @click="changeColor(c.color)"
+          >
+            <van-icon
+              name="success"
+              v-show="c.color === color"
+              color="white"
+              size="24px"
+            />
+          </div>
+        </div>
       </div>
     </van-popup>
   </div>
@@ -15,11 +29,12 @@
 <script lang="ts">
 import { Vue, Component, Watch } from "vue-property-decorator";
 import replacer from "webpack-theme-color-replacer/client";
+import storage, { CURRENT_THEME } from "../../utils/storage";
 
 @Component
 export default class extends Vue {
   show: boolean = false;
-  color: string = "#fc2834";
+  color: string = storage.getItem(CURRENT_THEME) || "#fc2834";
   colorList: any = [
     { key: "默认", color: "#fc2834" },
     { key: "薄暮", color: "#f7234f" },
@@ -36,8 +51,10 @@ export default class extends Vue {
     this.show = true;
   }
 
-  @Watch("color") onColor(val: string) {
-    this.changeColor(val);
+  close() {
+    setTimeout(() => {
+      this.show = false;
+    }, 300);
   }
 
   changeColor(val: string) {
@@ -48,10 +65,18 @@ export default class extends Vue {
       .changeColor({ newColors }, Promise)
       .then(() => {
         this.$toast("主题切换成功");
+        this.color = val;
+        storage.setItem(CURRENT_THEME, val);
+        this.close();
       })
       .catch(() => {
         this.$toast("主题切换失败");
+        this.close();
       });
+  }
+
+  created() {
+    replacer.changer.changeColor({ newColors: [this.color] }, Promise);
   }
 }
 </script>
@@ -62,6 +87,34 @@ export default class extends Vue {
   /deep/.van-popup--left {
     width: 275px;
     height: 100%;
+    padding: @padding-l;
+  }
+
+  .theme-wrapper {
+    .theme-title {
+      font-size: @font-size-m + 1;
+      font-weight: 500;
+      margin-bottom: 10px;
+      color: @primary-color;
+    }
+    .theme-list {
+      display: flex;
+      flex-wrap: wrap;
+      .theme-item {
+        border-radius: @border-radius;
+        width: 36px;
+        height: 36px;
+        margin-bottom: 15px;
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:nth-child(5n) {
+          margin-right: 0;
+        }
+      }
+    }
   }
 }
 </style>
