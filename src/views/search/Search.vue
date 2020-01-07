@@ -305,6 +305,7 @@ export default class extends Vue {
 
         .left-info {
           flex: 1;
+          overflow: hidden;
           .name {
             font-size: 15px;
           }
@@ -315,6 +316,10 @@ export default class extends Vue {
             margin-top: 5px;
             .ellipsis();
           }
+        }
+
+        .icon-more {
+          color: @text-color-2;
         }
       }
     }

@@ -104,6 +104,7 @@ export default class extends Vue {
 .comments {
   z-index: 1001;
   padding-top: @header-height;
+  min-height: 100%;
 
   &-song {
     display: flex;
