@@ -116,6 +116,7 @@ export default class extends Vue {
   mode: string = MODE.loop;
   currentTime: number = 0;
   duration: number = 0;
+  audio: HTMLAudioElement = null;
 
   @Action("setPlaying") setPlaying: any;
   @Action("setFullScreen") setFullScreen: any;
@@ -150,9 +151,7 @@ export default class extends Vue {
 
   close() {
     if (location.hash.indexOf("full-screen") === -1) {
-      this.$nextTick(() => {
-        this.setFullScreen(false);
-      });
+      this.setFullScreen(false);
     }
   }
 
@@ -165,17 +164,15 @@ export default class extends Vue {
   }
 
   canplay() {
-    (this.$refs.audio as any).play();
+    this.audio.play();
 
-    this.duration = (this.$refs.audio as any).duration;
+    this.duration = this.audio.duration;
   }
 
   ended() {
-    const audio = this.$refs.audio as any;
-
     if (this.mode === MODE.once) {
-      audio.currentTime = 0;
-      audio.play();
+      this.audio.currentTime = 0;
+      this.audio.play();
     } else {
       this.nextSong();
     }
@@ -186,7 +183,7 @@ export default class extends Vue {
   }
 
   updateProgress(percent: number) {
-    (this.$refs.audio as any).currentTime = percent * this.duration;
+    this.audio.currentTime = percent * this.duration;
     !this.playing && this.togglePlay();
   }
 
@@ -267,10 +264,8 @@ export default class extends Vue {
       return;
     }
 
-    const audio = this.$refs.audio as any;
-
     this.$nextTick(() => {
-      val ? audio.play() : audio.pause();
+      val ? this.audio.play() : this.audio.pause();
     });
   }
 
@@ -286,7 +281,7 @@ export default class extends Vue {
 
   firstplay() {
     setTimeout(() => {
-      const audio = this.$refs.audio as any;
+      const audio = this.audio;
 
       if (audio && this.playing) {
         audio.play();
@@ -298,6 +293,8 @@ export default class extends Vue {
   }
 
   mounted() {
+    this.audio = this.$refs.audio as HTMLAudioElement;
+
     if (this.currentSong.id) {
       this.getSong(this.currentSong.id);
     }
