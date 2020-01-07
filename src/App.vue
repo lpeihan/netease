@@ -38,6 +38,10 @@ export default class extends Vue {
       if (to.name === "search") {
         this.transitionName = "";
       }
+
+      if (to.name === "comments") {
+        this.transitionName = "";
+      }
     }
   }
 

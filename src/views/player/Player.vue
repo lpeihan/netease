@@ -23,7 +23,7 @@
           <div class="top-btns">
             <icon name="unfavorite" />
             <icon name="download" />
-            <icon name="comment" />
+            <icon name="comment" @click="goComments" />
             <icon name="more" />
           </div>
 
@@ -176,6 +176,10 @@ export default class extends Vue {
     } else {
       this.nextSong();
     }
+  }
+
+  goComments() {
+    this.$router.push(`/music/${this.currentSong.id}/comments`);
   }
 
   updateTime(e: any) {

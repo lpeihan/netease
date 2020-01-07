@@ -79,6 +79,17 @@ const routes = [
     meta: {
       index: 2
     }
+  },
+  {
+    path: "/music/:id/comments",
+    name: "comments",
+    component: () =>
+      import(
+        /* webpackChunkName: "comments" */ "../views/comments/Comments.vue"
+      ),
+    meta: {
+      index: 3
+    }
   }
 ];
 
