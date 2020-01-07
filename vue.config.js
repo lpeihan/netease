@@ -1,6 +1,7 @@
 const merge = require("webpack-merge");
 const TsImportPlugin = require("ts-import-plugin");
 const path = require("path");
+const ThemeColorReplacer = require("webpack-theme-color-replacer");
 
 function resolve(dir) {
   return path.join(__dirname, dir);
@@ -78,5 +79,17 @@ module.exports = {
         resolve("src/styles/mixins.less")
       ]
     }
+  },
+
+  configureWebpack: () => {
+    const plugins = [
+      new ThemeColorReplacer({
+        matchColors: ["#fc2834"],
+        fileName: "css/theme-colors.[contenthash:8].css",
+        injectCss: true
+      })
+    ];
+
+    return { plugins };
   }
 };

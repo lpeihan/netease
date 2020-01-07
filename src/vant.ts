@@ -9,7 +9,9 @@ import {
   Image,
   Lazyload,
   Popup,
-  Loading
+  Loading,
+  RadioGroup,
+  Radio
 } from "vant";
 
 Vue.use(Button);
@@ -24,3 +26,5 @@ Vue.use(Lazyload, {
 });
 Vue.use(Popup);
 Vue.use(Loading);
+Vue.use(RadioGroup);
+Vue.use(Radio);
