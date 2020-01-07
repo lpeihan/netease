@@ -10,7 +10,8 @@
       </keep-alive>
     </transition>
 
-    <player />
+    <player v-show="$route.name !== 'login'" />
+    <user-drawer ref="userDrawer" />
   </div>
 </template>
 
@@ -19,11 +20,14 @@ import { throttle } from "lodash";
 import { Vue, Component, Watch } from "vue-property-decorator";
 import { Action, Getter } from "vuex-class";
 import Player from "./views/player/Player.vue";
+import UserDrawer from "./views/user/UserDrawer.vue";
+import bus from "./utils/bus";
 
 @Component({
   name: "app",
   components: {
-    Player
+    Player,
+    UserDrawer
   }
 })
 export default class extends Vue {
@@ -62,6 +66,8 @@ export default class extends Vue {
         this.setScrollTop(doc.documentElement.scrollTop || doc.body.scrollTop);
       }, 50)
     );
+
+    bus.$on("open-drawer", () => (this.$refs.userDrawer as any).open());
   }
 }
 </script>

@@ -10,7 +10,9 @@ import {
   Lazyload,
   Popup,
   Loading,
-  Icon
+  Icon,
+  Field,
+  CellGroup
 } from "vant";
 
 Vue.use(Button);
@@ -26,3 +28,5 @@ Vue.use(Lazyload, {
 Vue.use(Popup);
 Vue.use(Loading);
 Vue.use(Icon);
+Vue.use(Field);
+Vue.use(CellGroup);

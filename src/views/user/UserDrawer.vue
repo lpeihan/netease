@@ -1,6 +1,14 @@
 <template>
   <div class="user-drawer">
     <van-popup v-model="show" position="left">
+      <div class="user-card" @click="login">
+        <div class="tips">
+          登录网易云音乐<br />
+          手机电脑多端同步，尽享海量高品质音乐
+        </div>
+        <van-button @click="login" size="small" round>立即登录</van-button>
+      </div>
+
       <div class="theme-wrapper">
         <div class="theme-title">主题切换</div>
         <div class="theme-list">
@@ -30,6 +38,8 @@
 import { Vue, Component, Watch } from "vue-property-decorator";
 import replacer from "webpack-theme-color-replacer/client";
 import storage, { CURRENT_THEME } from "../../utils/storage";
+import { isLogin, getUid } from "../../utils/auth";
+import { getUser } from "../../api/user";
 
 @Component
 export default class extends Vue {
@@ -46,6 +56,8 @@ export default class extends Vue {
     { key: "极客蓝", color: "#2F54EB" },
     { key: "酱紫", color: "#722ED1" }
   ];
+  user: any = {};
+  isLogin: boolean = isLogin();
 
   open() {
     this.show = true;
@@ -54,7 +66,18 @@ export default class extends Vue {
   close() {
     setTimeout(() => {
       this.show = false;
-    }, 300);
+    }, 100);
+  }
+
+  login() {
+    this.$router.push("/user/login");
+    this.close();
+  }
+
+  async getUser() {
+    console.log(getUid());
+    const res = await getUser(getUid());
+    this.user = res.data;
   }
 
   changeColor(val: string) {
@@ -77,6 +100,9 @@ export default class extends Vue {
 
   created() {
     replacer.changer.changeColor({ newColors: [this.color] }, Promise);
+    if (this.isLogin) {
+      this.getUser();
+    }
   }
 }
 </script>
@@ -87,23 +113,41 @@ export default class extends Vue {
   /deep/.van-popup--left {
     width: 275px;
     height: 100%;
-    padding: @padding-l;
+  }
+
+  .user-card {
+    padding: 40px 12px;
+    color: @text-color-2;
+    background: @white url("../../assets/images/bg.jpeg") no-repeat;
+    background-size: 100%;
+    text-align: center;
+
+    .tips {
+      margin-bottom: 10px;
+      font-size: @font-size-s + 1;
+    }
+
+    /deep/.van-button--small {
+      padding: 0 15px;
+      color: @text-color-2;
+      border-color: @white;
+    }
   }
 
   .theme-wrapper {
+    padding: @padding-l;
     .theme-title {
-      font-size: @font-size-m + 1;
+      font-size: @font-size-m;
       font-weight: 500;
       margin-bottom: 16px;
-      color: @primary-color;
     }
     .theme-list {
       display: flex;
       flex-wrap: wrap;
       .theme-item {
         border-radius: @border-radius;
-        width: 34px;
-        height: 34px;
+        width: 30px;
+        height: 30px;
         margin-bottom: 16px;
         margin-right: 18px;
         display: flex;

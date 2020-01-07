@@ -54,8 +54,6 @@
         <van-tab title="歌手"><singers /></van-tab>
       </van-tabs>
     </div>
-
-    <user-drawer ref="userDrawer" />
   </div>
 </template>
 
@@ -66,6 +64,7 @@ import Singers from "../singers/Singers.vue";
 import UserDrawer from "../user/UserDrawer.vue";
 import { getBanners, getPersonalized } from "../../api/playlist";
 import PlaylistGrid from "../playlist/PlaylistGrid.vue";
+import bus from "../../utils/bus";
 
 @Component({
   name: "home",
@@ -88,7 +87,7 @@ export default class extends Vue {
   ];
 
   openUserDrawer() {
-    (this.$refs.userDrawer as any).open();
+    bus.$emit("open-drawer");
   }
 
   async getBanners() {
