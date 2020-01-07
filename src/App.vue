@@ -2,7 +2,11 @@
   <div class="app">
     <transition :name="transitionName" :css="Boolean(transitionName)">
       <keep-alive :include="keepAlive">
-        <router-view class="app-view" :key="$route.fullPath" />
+        <router-view
+          class="app-view"
+          :key="$route.fullPath"
+          :class="{ bottom: playlist.length }"
+        />
       </keep-alive>
     </transition>
 
@@ -13,7 +17,7 @@
 <script lang="ts">
 import { throttle } from "lodash";
 import { Vue, Component, Watch } from "vue-property-decorator";
-import { Action } from "vuex-class";
+import { Action, Getter } from "vuex-class";
 import Player from "./views/player/Player.vue";
 
 @Component({
@@ -45,6 +49,7 @@ export default class extends Vue {
     }
   }
 
+  @Getter("playlist") playlist: any;
   @Action("setScrollTop") setScrollTop: (val: number) => {};
 
   mounted() {
@@ -71,7 +76,10 @@ export default class extends Vue {
   min-height: 100%;
   z-index: 1;
   background: @white;
-  padding-bottom: 70px;
+
+  &.bottom {
+    padding-bottom: 70px;
+  }
 
   &.slide {
     &-left-enter,

@@ -6,6 +6,7 @@ import "./vant";
 import VConsole from "vconsole";
 import Icon from "./components/Icon.vue";
 import "./styles/index.less";
+import "./utils/filters";
 
 new VConsole();
 
