@@ -94,7 +94,7 @@ export default class extends Vue {
     .theme-title {
       font-size: @font-size-m + 1;
       font-weight: 500;
-      margin-bottom: 10px;
+      margin-bottom: 16px;
       color: @primary-color;
     }
     .theme-list {
@@ -102,10 +102,10 @@ export default class extends Vue {
       flex-wrap: wrap;
       .theme-item {
         border-radius: @border-radius;
-        width: 36px;
-        height: 36px;
-        margin-bottom: 15px;
-        margin-right: 15px;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 16px;
+        margin-right: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
