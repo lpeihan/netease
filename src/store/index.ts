@@ -1,13 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import storage, { PLAYLIST, CURRENT_INDEX } from "../utils/storage";
+import storage, { PLAYLIST, CURRENT_INDEX, USER } from "../utils/storage";
 
 import {
   SET_SCROLL_TOP,
   SET_PLAYLIST,
   SET_CURRENT_INDEX,
   SET_FULL_SCREEN,
-  SET_PLAYING
+  SET_PLAYING,
+  SET_USER
 } from "./types";
 
 Vue.use(Vuex);
@@ -18,7 +19,8 @@ export default new Vuex.Store({
     playlist: storage.getItem(PLAYLIST) || [],
     currentIndex: storage.getItem(CURRENT_INDEX),
     fullScreen: false,
-    playing: false
+    playing: false,
+    user: storage.getItem(USER) || {}
   },
   mutations: {
     [SET_SCROLL_TOP](state, scrollTop) {
@@ -37,6 +39,9 @@ export default new Vuex.Store({
     },
     [SET_PLAYING](state, playing) {
       state.playing = playing;
+    },
+    [SET_USER](state, user) {
+      state.user = user;
     }
   },
   actions: {
@@ -96,6 +101,13 @@ export default new Vuex.Store({
       commit(SET_PLAYLIST, []);
       commit(SET_CURRENT_INDEX, -1);
       commit(SET_PLAYING, false);
+    },
+    setUser({ commit }, user) {
+      commit(SET_USER, user);
+    },
+    logout({ commit }) {
+      storage.setItem(USER, {});
+      commit(SET_USER, {});
     }
   },
   getters: {
@@ -104,7 +116,9 @@ export default new Vuex.Store({
     playlist: state => state.playlist,
     currentIndex: state => state.currentIndex,
     fullScreen: state => state.fullScreen,
-    playing: state => state.playing
+    playing: state => state.playing,
+    user: state => state.user,
+    isLogin: state => Boolean(state.user.profile)
   },
   modules: {}
 });

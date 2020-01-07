@@ -27,6 +27,7 @@ import { Vue, Component } from "vue-property-decorator";
 import VHeader from "../../components/Header.vue";
 import { login } from "../../api/user";
 import storage, { USER } from "../../utils/storage";
+import { Action } from "vuex-class";
 
 @Component({
   components: {
@@ -37,10 +38,14 @@ export default class extends Vue {
   phone: string = "";
   password: string = "";
 
+  @Action("setUser") setUser: any;
+
   async login() {
     try {
       const res = await login({ phone: this.phone, password: this.password });
       storage.setItem(USER, res.data);
+      this.setUser(res.data);
+
       this.$toast("登录成功");
       this.$router.go(-1);
     } catch (err) {

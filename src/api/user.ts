@@ -15,12 +15,3 @@ export function login({
     }
   });
 }
-
-export function getUser(uid: string) {
-  return request({
-    url: "/user/detail",
-    params: {
-      uid
-    }
-  });
-}

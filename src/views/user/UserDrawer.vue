@@ -2,11 +2,19 @@
   <div class="user-drawer">
     <van-popup v-model="show" position="left">
       <div class="user-card" @click="login">
-        <div class="tips">
-          登录网易云音乐<br />
-          手机电脑多端同步，尽享海量高品质音乐
-        </div>
-        <van-button @click="login" size="small" round>立即登录</van-button>
+        <template v-if="isLogin">
+          <img :src="user.profile.avatarUrl" class="avatar" />
+
+          <div class="nickname">{{ user.profile.nickname }}</div>
+        </template>
+
+        <template v-else>
+          <div class="tips">
+            登录网易云音乐<br />
+            手机电脑多端同步，尽享海量高品质音乐
+          </div>
+          <van-button @click="login" size="small" round>立即登录</van-button>
+        </template>
       </div>
 
       <div class="theme-wrapper">
@@ -30,6 +38,11 @@
           </div>
         </div>
       </div>
+      <div class="fields-wrapper">
+        <div class="field-item" @click="logout">
+          退出登录
+        </div>
+      </div>
     </van-popup>
   </div>
 </template>
@@ -38,8 +51,7 @@
 import { Vue, Component, Watch } from "vue-property-decorator";
 import replacer from "webpack-theme-color-replacer/client";
 import storage, { CURRENT_THEME } from "../../utils/storage";
-import { isLogin, getUid } from "../../utils/auth";
-import { getUser } from "../../api/user";
+import { Getter, Action } from "vuex-class";
 
 @Component
 export default class extends Vue {
@@ -56,8 +68,9 @@ export default class extends Vue {
     { key: "极客蓝", color: "#2F54EB" },
     { key: "酱紫", color: "#722ED1" }
   ];
-  user: any = {};
-  isLogin: boolean = isLogin();
+  @Getter("user") user: any;
+  @Getter("isLogin") isLogin: boolean;
+  @Action("logout") logout: () => {};
 
   open() {
     this.show = true;
@@ -70,14 +83,8 @@ export default class extends Vue {
   }
 
   login() {
-    this.$router.push("/user/login");
     this.close();
-  }
-
-  async getUser() {
-    console.log(getUid());
-    const res = await getUser(getUid());
-    this.user = res.data;
+    this.$router.push("/user/login");
   }
 
   changeColor(val: string) {
@@ -100,9 +107,6 @@ export default class extends Vue {
 
   created() {
     replacer.changer.changeColor({ newColors: [this.color] }, Promise);
-    if (this.isLogin) {
-      this.getUser();
-    }
   }
 }
 </script>
@@ -116,7 +120,7 @@ export default class extends Vue {
   }
 
   .user-card {
-    padding: 40px 12px;
+    padding: 35px 12px;
     color: @text-color-2;
     background: @white url("../../assets/images/bg.jpeg") no-repeat;
     background-size: 100%;
@@ -132,13 +136,30 @@ export default class extends Vue {
       color: @text-color-2;
       border-color: @white;
     }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+    }
+
+    .nickname {
+      margin-top: 5px;
+      font-size: @font-size-m;
+    }
+  }
+
+  .fields-wrapper {
+    .field-item {
+      padding: @padding @padding-l;
+      font-size: 15px;
+    }
   }
 
   .theme-wrapper {
     padding: @padding-l;
     .theme-title {
-      font-size: @font-size-m;
-      font-weight: 500;
+      font-size: 15px;
       margin-bottom: 16px;
     }
     .theme-list {
