@@ -17,6 +17,28 @@
         </template>
       </div>
 
+      <div class="user-entry van-hairline--bottom">
+        <div class="entry">
+          <icon name="user" />
+          <div class="text">我的歌单</div>
+        </div>
+
+        <div class="entry">
+          <icon name="unfavorite" />
+          <div class="text">收藏</div>
+        </div>
+
+        <div class="entry">
+          <icon name="history" />
+          <div class="text">播放历史</div>
+        </div>
+
+        <div class="entry">
+          <icon name="logout" @click="logout" />
+          <div class="text">退出</div>
+        </div>
+      </div>
+
       <div class="theme-wrapper">
         <div class="theme-title">主题切换</div>
         <div class="theme-list">
@@ -36,11 +58,6 @@
               size="24px"
             />
           </div>
-        </div>
-      </div>
-      <div class="fields-wrapper">
-        <div class="field-item" @click="logout">
-          退出登录
         </div>
       </div>
     </van-popup>
@@ -79,11 +96,11 @@ export default class extends Vue {
   close() {
     setTimeout(() => {
       this.show = false;
-    }, 100);
+    }, 300);
   }
 
   login() {
-    this.close();
+    this.show = false;
     this.$router.push("/user/login");
   }
 
@@ -113,9 +130,8 @@ export default class extends Vue {
 
 <style lang="less" scoped>
 .user-drawer {
-  height: 100%;
   /deep/.van-popup--left {
-    width: 275px;
+    width: 300px;
     height: 100%;
   }
 
@@ -125,6 +141,7 @@ export default class extends Vue {
     background: @white url("../../assets/images/bg.jpeg") no-repeat;
     background-size: 100%;
     text-align: center;
+    min-height: 170px;
 
     .tips {
       margin-bottom: 10px;
@@ -156,26 +173,47 @@ export default class extends Vue {
     }
   }
 
+  .user-entry {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 10px;
+    text-align: center;
+    .entry {
+      flex: 1;
+      .icon {
+        color: @primary-color;
+      }
+
+      .text {
+        font-size: @font-size-s;
+        color: @text-color-1;
+        margin-top: 5px;
+      }
+    }
+  }
+
   .theme-wrapper {
-    padding: @padding-l;
+    padding: @padding-l 20px;
     .theme-title {
-      font-size: 15px;
       margin-bottom: 16px;
+      text-align: center;
+      color: @text-color-1;
     }
     .theme-list {
       display: flex;
       flex-wrap: wrap;
       .theme-item {
         border-radius: @border-radius;
-        width: 30px;
-        height: 30px;
+        width: 28px;
+        height: 28px;
         margin-bottom: 16px;
         margin-right: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
+        opacity: 0.4;
 
-        &:nth-child(5n) {
+        &:nth-child(6n) {
           margin-right: 0;
         }
       }

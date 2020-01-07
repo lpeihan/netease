@@ -65,8 +65,7 @@ export default class extends Vue {
 
   /deep/.van-cell {
     font-size: @font-size-m;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 15px 5px;
 
     .van-icon {
       font-size: 20px;
