@@ -21,7 +21,7 @@
     </div>
 
     <div class="playlist-songs" v-if="songs.length">
-      <div class="play-all van-hairline--bottom">
+      <div class="play-all van-hairline--bottom" @click="playAll">
         <icon name="play" />
         播放全部 <span>({{ songs.length }}首)</span>
       </div>
@@ -73,11 +73,13 @@ export default class extends Vue {
   }
 
   select(index: number) {
-    // if (this.playlist.length) {
     this.selectPlay({ list: [this.songs[index]], index: 0 });
-    // } else {
-    //   this.selectPlay({ list: [...this.songs], index });
-    // }
+  }
+
+  playAll() {
+    if (this.songs.length) {
+      this.selectPlay({ list: [...this.songs], index: 0 });
+    }
   }
 }
 </script>

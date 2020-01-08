@@ -40,3 +40,13 @@ export function createSong(song: any) {
     desc: `${song.al.name}`
   });
 }
+
+export function createSearchSong(song: any) {
+  return new Song({
+    id: song.id,
+    name: song.name,
+    singer: singerName(song.artists),
+    desc: song.album.name,
+    image: song.artists[0].img1v1Url
+  });
+}

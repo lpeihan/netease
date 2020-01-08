@@ -497,10 +497,16 @@ export default class extends Vue {
     .song-info {
       padding-left: 10px;
       flex: 1;
+      overflow: hidden;
+
+      .name {
+        .ellipsis();
+      }
 
       .singer {
         color: @text-color-2;
         font-size: @font-size-s;
+        .ellipsis();
       }
     }
 

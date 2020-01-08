@@ -18,15 +18,20 @@
 
     <div class="search-normal" v-if="isSearch">
       <div class="song-list">
-        <div class="song-item" v-for="item in list" :key="item.id">
+        <div
+          class="song-item"
+          v-for="item in list"
+          :key="item.id"
+          @click="select(item)"
+        >
           <div class="left-info">
             <div class="name">{{ item.name }}</div>
             <div class="desc">
               <span class="singer">
-                {{ item.artists.map(i => i.name).join("/") }}
+                {{ item.singer }}
               </span>
               -
-              <span class="alias">{{ item.album.name }}</span>
+              <span class="alias">{{ item.desc }}</span>
             </div>
           </div>
           <icon name="more" />
@@ -82,6 +87,8 @@ import storage from "../../utils/storage";
 const SEARCH_HISTORYS = "SEARCH_HISTORYS";
 import InfiniteLoading from "../../components/InfiniteLoading.vue";
 import Suggests from "./Suggests.vue";
+import { Action } from "vuex-class";
+import { createSearchSong } from "../../services/song";
 
 @Component({
   components: {
@@ -98,6 +105,11 @@ export default class extends Vue {
   historys: string[] = storage.getItem(SEARCH_HISTORYS) || [];
   suggests: any[] = [];
   isFocus: boolean = false;
+
+  @Action("selectPlay") selectPlay: (payload: {
+    list: any[];
+    index?: number;
+  }) => {};
 
   @Watch("word") watchWord(val: string) {
     if (val === "") {
@@ -124,6 +136,10 @@ export default class extends Vue {
   clear() {
     this.word = "";
     document.getElementById("input").focus();
+  }
+
+  select(song: any) {
+    this.selectPlay({ list: [song], index: 0 });
   }
 
   async getHots() {
@@ -213,7 +229,9 @@ export default class extends Vue {
         offset: this.list.length
       });
 
-      const list = res.data.result.songs;
+      const list = res.data.result.songs.map((item: any) =>
+        createSearchSong(item)
+      );
 
       setTimeout(() => {
         if (this.page === 1 && list.length === 0) {
