@@ -24,7 +24,7 @@
         </div>
 
         <div class="entry">
-          <icon name="unfavorite" />
+          <icon name="unfavorite" @click="go('/user/favorite')" />
           <div class="text">收藏</div>
         </div>
 
@@ -96,7 +96,7 @@ export default class extends Vue {
   close(time = 300) {
     setTimeout(() => {
       this.show = false;
-    }, 300);
+    }, time);
   }
 
   go(path: string) {

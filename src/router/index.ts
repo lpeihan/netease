@@ -108,6 +108,15 @@ const routes = [
     meta: {
       index: 3
     }
+  },
+  {
+    path: "/user/favorite",
+    name: "favorite",
+    component: () =>
+      import(/* webpackChunkName: "favorite" */ "../views/user/Favorite.vue"),
+    meta: {
+      index: 3
+    }
   }
 ];
 

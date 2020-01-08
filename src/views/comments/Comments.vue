@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <div class="comments-wrapper">
+    <div class="comments-wrapper" v-if="hotComments.length">
       <div class="title">热门评论</div>
 
       <comment-item
@@ -20,7 +20,7 @@
       />
     </div>
 
-    <div class="comments-wrapper">
+    <div class="comments-wrapper" v-if="comments.length">
       <div class="title">最新评论</div>
 
       <comment-item

@@ -71,7 +71,7 @@ export default new Vuex.Store({
       for (let i = 0; i < list.length; i++) {
         for (let j = 0; j < originalPlaylist.length; j++) {
           if (originalPlaylist[j].id === list[i].id) {
-            originalPlaylist.splice(i, 1);
+            originalPlaylist.splice(j, 1);
             j--;
           }
         }
@@ -140,7 +140,8 @@ export default new Vuex.Store({
         favoriteList.pop();
       }
 
-      // commit(SET_FAVORITE_LIST, cacheFavoriteList(favoriteList));
+      storage.setItem(FAVORITE_LIST, favoriteList);
+      commit(SET_FAVORITE_LIST, favoriteList);
     },
 
     deleteFavoriteList({ commit, state }, song) {
@@ -149,7 +150,9 @@ export default new Vuex.Store({
       const index = favoriteList.findIndex((item: any) => song.id === item.id);
 
       favoriteList.splice(index, 1);
-      // commit(SET_FAVORITE_LIST, cacheFavoriteList(favoriteList));
+
+      storage.setItem(FAVORITE_LIST, favoriteList);
+      commit(SET_FAVORITE_LIST, favoriteList);
     },
 
     savePlayHistory({ commit, state }, song) {

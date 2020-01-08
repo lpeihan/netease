@@ -2,7 +2,7 @@
   <playlist-base
     title="播放历史"
     :image="require('../../assets/images/bg.jpeg')"
-    :songs="songs"
+    :songs="playHistory"
   />
 </template>
 
@@ -10,6 +10,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import PlaylistBase from "../playlist/PlaylistBase.vue";
 import storage, { PLAY_HISTORY } from "../../utils/storage";
+import { Getter } from "vuex-class";
 
 @Component({
   components: {
@@ -17,7 +18,7 @@ import storage, { PLAY_HISTORY } from "../../utils/storage";
   }
 })
 export default class extends Vue {
-  songs: any[] = storage.getItem(PLAY_HISTORY) || [];
+  @Getter("playHistory") playHistory: any[];
 }
 </script>
 

@@ -2,7 +2,7 @@
   <playlist-base
     title="我收藏的音乐"
     :image="require('../../assets/images/bg.jpeg')"
-    :songs="songs"
+    :songs="favoriteList"
   />
 </template>
 
@@ -10,6 +10,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import PlaylistBase from "../playlist/PlaylistBase.vue";
 import storage, { FAVORITE_LIST } from "../../utils/storage";
+import { Getter } from "vuex-class";
 
 @Component({
   components: {
@@ -17,7 +18,7 @@ import storage, { FAVORITE_LIST } from "../../utils/storage";
   }
 })
 export default class extends Vue {
-  songs: any[] = storage.getItem(FAVORITE_LIST) || [];
+  @Getter("favoriteList") favoriteList: any[];
 }
 </script>
 

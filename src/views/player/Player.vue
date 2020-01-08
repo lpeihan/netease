@@ -21,7 +21,10 @@
 
         <div class="footer">
           <div class="top-btns">
-            <icon name="unfavorite" />
+            <icon
+              @click="toggleFavorite(currentSong)"
+              :name="isFavorite ? 'favorite' : 'unfavorite'"
+            />
             <icon name="download" />
             <icon name="comment" @click="goComments" />
             <icon name="more" />
@@ -112,6 +115,8 @@ export default class extends Vue {
   @Getter("fullScreen") fullScreen: boolean;
   @Getter("playing") playing: boolean;
   @Getter("currentIndex") currentIndex: number;
+  @Getter("favoriteList") favoriteList: any[];
+
   url: string = "";
   mode: string = MODE.loop;
   currentTime: number = 0;
@@ -123,6 +128,8 @@ export default class extends Vue {
   @Action("nextSong") nextSong: any;
   @Action("prevSong") prevSong: any;
   @Action("savePlayHistory") savePlayHistory: any;
+  @Action("saveFavoriteList") saveFavoriteList: any;
+  @Action("deleteFavoriteList") deleteFavoriteList: any;
 
   get modeText() {
     if (this.mode === MODE.loop) {
@@ -140,6 +147,13 @@ export default class extends Vue {
 
   get percent() {
     return this.duration ? this.currentTime / this.duration : 0;
+  }
+
+  get isFavorite() {
+    const index = this.favoriteList.findIndex(
+      item => item.id === this.currentSong.id
+    );
+    return index > -1;
   }
 
   async getSong(id: string) {
@@ -176,6 +190,14 @@ export default class extends Vue {
       this.audio.play();
     } else {
       this.nextSong();
+    }
+  }
+
+  toggleFavorite(song: any) {
+    if (this.isFavorite) {
+      this.deleteFavoriteList(song);
+    } else {
+      this.saveFavoriteList(song);
     }
   }
 
@@ -418,6 +440,10 @@ export default class extends Vue {
         .icon {
           width: 24px;
           height: 24px;
+        }
+
+        .icon-favorite {
+          color: @primary-color;
         }
       }
 
