@@ -43,28 +43,6 @@
           <div class="text">退出</div>
         </div>
       </div>
-
-      <!-- <div class="theme-wrapper">
-        <div class="theme-title">主题切换</div>
-        <div class="theme-list">
-          <div
-            class="theme-item"
-            v-for="c in colorList"
-            :key="c.key"
-            :style="{
-              backgroundColor: c.color
-            }"
-            @click="changeColor(c.color)"
-          >
-            <van-icon
-              name="success"
-              v-show="c.color === color"
-              color="white"
-              size="24px"
-            />
-          </div>
-        </div>
-      </div> -->
     </van-popup>
   </div>
 </template>
@@ -75,24 +53,38 @@ import replacer from "webpack-theme-color-replacer/client";
 import storage, { CURRENT_THEME } from "../../utils/storage";
 import { Getter, Action } from "vuex-class";
 
+const THEME_LIST = [
+  { key: "默认", color: "#fc2834" },
+  { key: "薄暮", color: "#f7234f" },
+  { key: "火山", color: "#FA541C" },
+  { key: "日暮", color: "#FAAD14" },
+  { key: "明青", color: "#13C2C2" },
+  { key: "极光绿", color: "#52C41A" },
+  { key: "拂晓蓝", color: "#1890FF" },
+  { key: "极客蓝", color: "#2F54EB" },
+  { key: "酱紫", color: "#722ED1" }
+];
+
 @Component
 export default class extends Vue {
   show: boolean = false;
-  color: string = storage.getItem(CURRENT_THEME) || "#fc2834";
-  colorList: any = [
-    { key: "默认", color: "#fc2834" },
-    { key: "薄暮", color: "#f7234f" },
-    { key: "火山", color: "#FA541C" },
-    { key: "日暮", color: "#FAAD14" },
-    { key: "明青", color: "#13C2C2" },
-    { key: "极光绿", color: "#52C41A" },
-    { key: "拂晓蓝", color: "#1890FF" },
-    { key: "极客蓝", color: "#2F54EB" },
-    { key: "酱紫", color: "#722ED1" }
-  ];
+  color: any = storage.getItem(CURRENT_THEME) || {
+    key: "默认",
+    color: "#fc2834"
+  };
   @Getter("user") user: any;
   @Getter("isLogin") isLogin: boolean;
   @Action("logout") logout: () => {};
+
+  get index() {
+    for (let i = 0; i < THEME_LIST.length; i++) {
+      if (THEME_LIST[i].color === this.color.color) {
+        return i;
+      }
+    }
+
+    return 0;
+  }
 
   open() {
     this.show = true;
@@ -122,16 +114,16 @@ export default class extends Vue {
   }
 
   changeColor() {
-    const r = Math.round(Math.random() * (this.colorList.length - 1));
-    const color = this.colorList[r].color;
-    const newColors = [color];
+    const index = (this.index + 1) % THEME_LIST.length;
+    const color = THEME_LIST[index];
+    const newColors = [color.color];
 
     replacer.changer
       .changeColor({ newColors }, Promise)
       .then(() => {
         this.$notify({
-          message: this.colorList[r].key,
-          background: color,
+          message: color.key,
+          background: color.color,
           duration: 1000
         });
         this.color = color;
