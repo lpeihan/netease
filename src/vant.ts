@@ -12,7 +12,8 @@ import {
   Loading,
   Icon,
   Field,
-  CellGroup
+  CellGroup,
+  Dialog
 } from "vant";
 
 Vue.use(Button);
@@ -30,3 +31,4 @@ Vue.use(Loading);
 Vue.use(Icon);
 Vue.use(Field);
 Vue.use(CellGroup);
+Vue.use(Dialog);

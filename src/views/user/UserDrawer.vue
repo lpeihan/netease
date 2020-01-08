@@ -34,7 +34,7 @@
         </div>
 
         <div class="entry">
-          <icon name="logout" @click="logout" />
+          <icon name="logout" @click="confirmLogout" />
           <div class="text">退出</div>
         </div>
       </div>
@@ -126,6 +126,18 @@ export default class extends Vue {
       .catch(() => {
         this.$toast("主题切换失败");
         this.close();
+      });
+  }
+
+  confirmLogout() {
+    this.$dialog
+      .confirm({
+        title: "退出登录",
+        message: "是否退出登录"
+      })
+      .then(() => {
+        this.logout();
+        this.$toast("您已退出登录");
       });
   }
 
