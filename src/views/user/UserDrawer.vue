@@ -148,7 +148,7 @@ export default class extends Vue {
   }
 
   created() {
-    replacer.changer.changeColor({ newColors: [this.color] }, Promise);
+    replacer.changer.changeColor({ newColors: [this.color.color] }, Promise);
   }
 }
 </script>

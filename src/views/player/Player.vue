@@ -345,6 +345,20 @@ export default class extends Vue {
   }
 }
 
+@keyframes favorite {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1.1);
+  }
+}
+
 .player {
   &-full {
     position: fixed;
@@ -444,6 +458,7 @@ export default class extends Vue {
 
         .icon-favorite {
           color: @primary-color;
+          animation: favorite 0.3s;
         }
       }
 

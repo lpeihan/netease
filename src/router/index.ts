@@ -29,7 +29,7 @@ const routes = [
         /* webpackChunkName: "playlist" */ "../views/playlist/PlaylistPage.vue"
       ),
     meta: {
-      index: 10
+      index: 5
     }
   },
   {
@@ -88,7 +88,7 @@ const routes = [
         /* webpackChunkName: "comments" */ "../views/comments/Comments.vue"
       ),
     meta: {
-      index: 3
+      index: 6
     }
   },
   {
