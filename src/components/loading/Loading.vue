@@ -1,12 +1,10 @@
 <template>
-  <transition name="van-fade" :duration="50">
-    <div class="loading" v-if="show">
-      <div class="loading-content">
-        <img src="../../assets/images/loading.gif" />
-        <div class="message">{{ message }}</div>
-      </div>
+  <div class="loading" v-if="show">
+    <div class="loading-content">
+      <img src="../../assets/images/loading2.gif" />
+      <div class="message">{{ message }}</div>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script lang="ts">
@@ -16,7 +14,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 export default class Icon extends Vue {
   @Prop({
     type: String,
-    default: "正在载入..."
+    default: "努力加载中..."
   })
   message: string;
 
@@ -38,16 +36,19 @@ export default class Icon extends Vue {
   z-index: 100;
 
   &-content {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     img {
       width: 24px;
+      height: 20px;
     }
 
     .message {
-      font-size: @font-size-s;
-      color: @text-color-2;
-      margin-top: 5px;
+      font-size: @font-size-s + 1;
+      color: @text-color-1;
+      margin-left: 4px;
     }
   }
 }
