@@ -99,6 +99,15 @@ const routes = [
     meta: {
       index: 3
     }
+  },
+  {
+    path: "/user/history",
+    name: "history",
+    component: () =>
+      import(/* webpackChunkName: "history" */ "../views/user/History.vue"),
+    meta: {
+      index: 3
+    }
   }
 ];
 

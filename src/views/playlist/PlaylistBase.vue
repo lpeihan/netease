@@ -152,6 +152,7 @@ export default class extends Vue {
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     overflow: hidden;
+    min-height: 500px;
 
     .play-all {
       display: flex;

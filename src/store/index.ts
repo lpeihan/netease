@@ -1,6 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import storage, { PLAYLIST, CURRENT_INDEX, USER } from "../utils/storage";
+import storage, {
+  PLAYLIST,
+  CURRENT_INDEX,
+  USER,
+  PLAY_HISTORY,
+  FAVORITE_LIST
+} from "../utils/storage";
 
 import {
   SET_SCROLL_TOP,
@@ -8,7 +14,9 @@ import {
   SET_CURRENT_INDEX,
   SET_FULL_SCREEN,
   SET_PLAYING,
-  SET_USER
+  SET_USER,
+  SET_FAVORITE_LIST,
+  SET_PLAY_HISTORY
 } from "./types";
 
 Vue.use(Vuex);
@@ -20,7 +28,9 @@ export default new Vuex.Store({
     currentIndex: storage.getItem(CURRENT_INDEX),
     fullScreen: false,
     playing: false,
-    user: storage.getItem(USER) || {}
+    user: storage.getItem(USER) || {},
+    favoriteList: storage.getItem(FAVORITE_LIST) || [],
+    playHistory: storage.getItem(PLAY_HISTORY) || []
   },
   mutations: {
     [SET_SCROLL_TOP](state, scrollTop) {
@@ -42,6 +52,12 @@ export default new Vuex.Store({
     },
     [SET_USER](state, user) {
       state.user = user;
+    },
+    [SET_FAVORITE_LIST](state, list) {
+      state.favoriteList = list;
+    },
+    [SET_PLAY_HISTORY](state, list) {
+      state.playHistory = list;
     }
   },
   actions: {
@@ -108,6 +124,51 @@ export default new Vuex.Store({
     logout({ commit }) {
       storage.setItem(USER, {});
       commit(SET_USER, {});
+    },
+    saveFavoriteList({ commit, state }, song) {
+      const favoriteList = state.favoriteList.slice();
+
+      const index = favoriteList.findIndex((item: any) => item.id === song.id);
+
+      if (index > -1) {
+        favoriteList.splice(index, 1);
+      }
+
+      favoriteList.unshift(song);
+
+      if (favoriteList.length > 100) {
+        favoriteList.pop();
+      }
+
+      // commit(SET_FAVORITE_LIST, cacheFavoriteList(favoriteList));
+    },
+
+    deleteFavoriteList({ commit, state }, song) {
+      const favoriteList = state.favoriteList.slice();
+
+      const index = favoriteList.findIndex((item: any) => song.id === item.id);
+
+      favoriteList.splice(index, 1);
+      // commit(SET_FAVORITE_LIST, cacheFavoriteList(favoriteList));
+    },
+
+    savePlayHistory({ commit, state }, song) {
+      const playHistory = state.playHistory.slice();
+
+      const index = playHistory.findIndex((item: any) => item.id === song.id);
+
+      if (index > -1) {
+        playHistory.splice(index, 1);
+      }
+
+      playHistory.unshift(song);
+
+      if (playHistory.length >= 100) {
+        playHistory.length = 100;
+      }
+
+      storage.setItem(PLAY_HISTORY, playHistory);
+      commit(SET_PLAY_HISTORY, playHistory);
     }
   },
   getters: {
@@ -118,7 +179,9 @@ export default new Vuex.Store({
     fullScreen: state => state.fullScreen,
     playing: state => state.playing,
     user: state => state.user,
-    isLogin: state => Boolean(state.user.profile)
+    isLogin: state => Boolean(state.user.profile),
+    playHistory: state => state.playHistory,
+    favoriteList: state => state.favoriteList
   },
   modules: {}
 });

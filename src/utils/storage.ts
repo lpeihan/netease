@@ -59,3 +59,5 @@ export const PLAYLIST = "PLAYLIST";
 export const CURRENT_INDEX = "CURRENT_INDEX";
 export const CURRENT_THEME = "CURRENT_THEME";
 export const USER = "USER";
+export const PLAY_HISTORY = "PLAY_HISTORY";
+export const FAVORITE_LIST = "FAVORITE_LIST";

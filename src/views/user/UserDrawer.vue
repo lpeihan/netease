@@ -28,7 +28,7 @@
           <div class="text">收藏</div>
         </div>
 
-        <div class="entry">
+        <div class="entry" @click="go('/user/history')">
           <icon name="history" />
           <div class="text">播放历史</div>
         </div>
@@ -93,14 +93,21 @@ export default class extends Vue {
     this.show = true;
   }
 
-  close() {
+  close(time = 300) {
     setTimeout(() => {
       this.show = false;
     }, 300);
   }
 
+  go(path: string) {
+    this.close(0);
+    setTimeout(() => {
+      this.$router.push(path);
+    }, 300);
+  }
+
   login() {
-    this.show = false;
+    this.close(0);
     this.$router.push("/user/login");
   }
 

@@ -122,6 +122,7 @@ export default class extends Vue {
   @Action("setFullScreen") setFullScreen: any;
   @Action("nextSong") nextSong: any;
   @Action("prevSong") prevSong: any;
+  @Action("savePlayHistory") savePlayHistory: any;
 
   get modeText() {
     if (this.mode === MODE.loop) {
@@ -258,6 +259,8 @@ export default class extends Vue {
     if (!newSong.id) {
       return;
     }
+
+    this.savePlayHistory(newSong);
 
     await this.getSong(newSong.id);
     this.setPlaying(true);

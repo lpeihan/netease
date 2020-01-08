@@ -5,7 +5,8 @@ export function getSong(id: string) {
     url: "/song/url",
     params: {
       id
-    }
+    },
+    _loading: false
   });
 }
 
