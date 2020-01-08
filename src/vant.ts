@@ -1,4 +1,5 @@
 import Vue from "vue";
+
 import {
   Button,
   Toast,
@@ -13,7 +14,8 @@ import {
   Icon,
   Field,
   CellGroup,
-  Dialog
+  Dialog,
+  Notify
 } from "vant";
 
 Vue.use(Button);
@@ -32,3 +34,4 @@ Vue.use(Icon);
 Vue.use(Field);
 Vue.use(CellGroup);
 Vue.use(Dialog);
+Vue.use(Notify);

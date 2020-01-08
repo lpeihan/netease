@@ -35,7 +35,7 @@
 
         <div class="entry" @click="changeColor">
           <icon name="theme" />
-          <div class="text">切换主题</div>
+          <div class="text">换个心情</div>
         </div>
 
         <div class="entry">
@@ -121,16 +121,21 @@ export default class extends Vue {
     this.$router.push("/user/login");
   }
 
-  changeColor(val: string) {
-    this.$toast.loading("正在设置主题中");
-    const newColors = [val];
+  changeColor() {
+    const r = Math.round(Math.random() * (this.colorList.length - 1));
+    const color = this.colorList[r].color;
+    const newColors = [color];
 
     replacer.changer
       .changeColor({ newColors }, Promise)
       .then(() => {
-        this.$toast("主题切换成功");
-        this.color = val;
-        storage.setItem(CURRENT_THEME, val);
+        this.$notify({
+          message: this.colorList[r].key,
+          background: color,
+          duration: 1000
+        });
+        this.color = color;
+        storage.setItem(CURRENT_THEME, color);
       })
       .catch(() => {
         this.$toast("主题切换失败");
