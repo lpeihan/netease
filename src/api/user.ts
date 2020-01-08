@@ -15,3 +15,12 @@ export function login({
     }
   });
 }
+
+export function getUserPlaylist(uid: string | number) {
+  return request({
+    url: "/user/playlist",
+    params: {
+      uid
+    }
+  });
+}

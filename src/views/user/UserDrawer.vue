@@ -1,7 +1,7 @@
 <template>
   <div class="user-drawer">
     <van-popup v-model="show" position="left">
-      <div class="user-card" @click="login">
+      <div class="user-card">
         <template v-if="isLogin">
           <img :src="user.profile.avatarUrl" class="avatar" />
 
@@ -9,7 +9,7 @@
         </template>
 
         <template v-else>
-          <div class="tips">
+          <div class="tips" @click="login">
             登录网易云音乐<br />
             手机电脑多端同步，尽享海量高品质音乐
           </div>
@@ -17,14 +17,14 @@
         </template>
       </div>
 
-      <div class="user-entry van-hairline--bottom">
-        <div class="entry">
+      <div class="user-entry">
+        <div class="entry" @click="go('/user/playlists')">
           <icon name="user" />
           <div class="text">我的歌单</div>
         </div>
 
         <div class="entry">
-          <icon name="unfavorite" @click="go('/user/favorite')" />
+          <icon name="favorite" @click="go('/user/favorite')" />
           <div class="text">收藏</div>
         </div>
 
@@ -33,13 +33,18 @@
           <div class="text">播放历史</div>
         </div>
 
+        <div class="entry" @click="changeColor">
+          <icon name="theme" />
+          <div class="text">切换主题</div>
+        </div>
+
         <div class="entry">
           <icon name="logout" @click="confirmLogout" />
           <div class="text">退出</div>
         </div>
       </div>
 
-      <div class="theme-wrapper">
+      <!-- <div class="theme-wrapper">
         <div class="theme-title">主题切换</div>
         <div class="theme-list">
           <div
@@ -59,7 +64,7 @@
             />
           </div>
         </div>
-      </div>
+      </div> -->
     </van-popup>
   </div>
 </template>
@@ -101,8 +106,13 @@ export default class extends Vue {
 
   go(path: string) {
     this.close(0);
+
     setTimeout(() => {
-      this.$router.push(path);
+      if (path === "/user/playlists" && !this.isLogin) {
+        this.$router.push("/user/login");
+      } else {
+        this.$router.push(path);
+      }
     }, 300);
   }
 
@@ -121,7 +131,6 @@ export default class extends Vue {
         this.$toast("主题切换成功");
         this.color = val;
         storage.setItem(CURRENT_THEME, val);
-        this.close();
       })
       .catch(() => {
         this.$toast("主题切换失败");
@@ -195,12 +204,18 @@ export default class extends Vue {
   .user-entry {
     display: flex;
     justify-content: space-between;
-    padding: 15px 10px;
     text-align: center;
+    flex-wrap: wrap;
     .entry {
-      flex: 1;
+      width: 25%;
+      padding: 12px;
+      position: relative;
+      .active();
+
       .icon {
         color: @primary-color;
+        width: 22px;
+        height: 22px;
       }
 
       .text {
