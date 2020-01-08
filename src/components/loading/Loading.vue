@@ -1,5 +1,5 @@
 <template>
-  <div class="loading" v-if="show">
+  <div class="loading" v-show="show">
     <div class="loading-content">
       <img src="../../assets/images/loading2.gif" />
       <div class="message">{{ message }}</div>
