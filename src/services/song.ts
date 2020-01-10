@@ -1,11 +1,3 @@
-export interface ISong {
-  id: any;
-  singer: string;
-  name: string;
-  image: string;
-  desc: string;
-}
-
 class Song {
   id: string;
   singer: string;

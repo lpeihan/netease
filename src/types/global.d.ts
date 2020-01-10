@@ -4,6 +4,14 @@ declare module "create-keyframe-animation";
 
 declare module "webpack-theme-color-replacer/client";
 
+interface ISong {
+  id: string;
+  singer: string;
+  name: string;
+  image: string;
+  desc: string;
+}
+
 declare module "axios" {
   export interface AxiosTransformer {
     (data: any, headers?: any): any;

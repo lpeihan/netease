@@ -110,12 +110,12 @@ const MODE = {
   }
 })
 export default class extends Vue {
-  @Getter("currentSong") currentSong: any;
-  @Getter("playlist") playlist: any[];
+  @Getter("currentSong") currentSong: ISong;
+  @Getter("playlist") playlist: ISong[];
   @Getter("fullScreen") fullScreen: boolean;
   @Getter("playing") playing: boolean;
   @Getter("currentIndex") currentIndex: number;
-  @Getter("favoriteList") favoriteList: any[];
+  @Getter("favoriteList") favoriteList: ISong[];
 
   url: string = "";
   mode: string = MODE.loop;
@@ -123,13 +123,13 @@ export default class extends Vue {
   duration: number = 0;
   audio: HTMLAudioElement = null;
 
-  @Action("setPlaying") setPlaying: any;
-  @Action("setFullScreen") setFullScreen: any;
-  @Action("nextSong") nextSong: any;
-  @Action("prevSong") prevSong: any;
-  @Action("savePlayHistory") savePlayHistory: any;
-  @Action("saveFavoriteList") saveFavoriteList: any;
-  @Action("deleteFavoriteList") deleteFavoriteList: any;
+  @Action("setPlaying") setPlaying: Function;
+  @Action("setFullScreen") setFullScreen: Function;
+  @Action("nextSong") nextSong: Function;
+  @Action("prevSong") prevSong: Function;
+  @Action("savePlayHistory") savePlayHistory: Function;
+  @Action("saveFavoriteList") saveFavoriteList: Function;
+  @Action("deleteFavoriteList") deleteFavoriteList: Function;
 
   get modeText() {
     if (this.mode === MODE.loop) {
@@ -193,7 +193,7 @@ export default class extends Vue {
     }
   }
 
-  toggleFavorite(song: any) {
+  toggleFavorite(song: ISong) {
     if (this.isFavorite) {
       this.deleteFavoriteList(song);
     } else {
@@ -273,7 +273,7 @@ export default class extends Vue {
     };
   }
 
-  @Watch("currentSong") async watchCurrentSong(newSong: any, oldSong: any) {
+  @Watch("currentSong") async watchCurrentSong(newSong: ISong, oldSong: ISong) {
     if (newSong.id === oldSong.id) {
       return;
     }

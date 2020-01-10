@@ -22,7 +22,7 @@ import storage, { CURRENT_PLAYLIST } from "../../utils/storage";
 })
 export default class extends Vue {
   playlist: any = storage.getItem(CURRENT_PLAYLIST) || {};
-  songs: any[] = [];
+  songs: ISong[] = [];
 
   async getSingerDetail() {
     const res = await getSingersDetail(this.playlist.id);
