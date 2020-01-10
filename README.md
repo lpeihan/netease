@@ -21,6 +21,8 @@ http://music.ipeihan.top
 
 因为是第一次使用 typescript，所以很多地方可能写的有点菜，望多多包涵和交流。
 
+## JS 版
+js版本请移步 https://github.com/lpeihan/vue-music-webapp
 
 
 ## 已完成功能
