@@ -17,7 +17,7 @@ http://music.ipeihan.top
 
 
 ## 技术栈
-基于 vue、typescript、vant、vuex、vuex-class、vue-property-decorator 等技术开发了这款音乐播放器。不得不说有赞的 vant 这个框架，真的超赞，提供了很多实用的组件和功能，让我能更好的驾驭这个项目。
+基于 vue、typescript、vant、vuex、vuex-class、vue-property-decorator 等技术开发了这款音乐播放器。
 
 因为是第一次使用 typescript，所以很多地方可能写的有点菜，望多多包涵和交流。
 
