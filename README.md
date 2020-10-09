@@ -1,7 +1,5 @@
 # Netease
-想拥抱 typescript 有很长一段时间了，所以最近抽空用 vue-cli3 结合 typescript 写了网易云音乐这个项目。
-
-写的比较用心，可能是全网体验最好的音乐webapp了。
+基于typescript的网易云音乐
 
 
 ## 网易云音乐接口地址
@@ -19,7 +17,7 @@ http://music.ipeihan.top
 ## 技术栈
 基于 vue、typescript、vant、vuex、vuex-class、vue-property-decorator 等技术开发了这款音乐播放器。
 
-因为是第一次使用 typescript，所以很多地方可能写的有点菜，望多多包涵和交流。
+第一次使用 typescript，有些地方可能写的有点菜，望多多包涵和交流。
 
 ## JS 版
 js版本请移步 https://github.com/lpeihan/vue-music-webapp
